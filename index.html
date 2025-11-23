@@ -6,24 +6,23 @@
 <title>🐰 C9 1회차 낭플단</title>
 
 <style>
-/* === 전체 배경 === */
+/* ===== 전체 ===== */
 body {
     background: #FFF6FA;
     font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     display: flex;
     justify-content: center;
     padding: 20px 16px;
-    color: #4c2d3b;
     margin: 0;
+    color: #4c2d3b;
 }
 
-/* === 컨테이너 === */
 .wrap {
     width: 100%;
     margin: 0 auto;
 }
 
-/* === 제목 === */
+/* ===== 제목 ===== */
 h1 {
     text-align: center;
     font-size: 22px;
@@ -32,21 +31,21 @@ h1 {
     color: #FF8FB2;
 }
 
-/* === 가로 스크롤 영역 === */
+/* ===== 스크롤 ===== */
 .table-scroll {
     overflow-x: auto;
     padding-bottom: 6px;
 }
 
-/* === 테이블 구조 === */
+/* ===== 테이블(행 묶음) ===== */
 .table {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    min-width: 650px;
+    min-width: 720px; /* 새 열 추가로 최소폭 증가 */
 }
 
-/* === 행 === */
+/* ===== 행 ===== */
 .row {
     display: flex;
     background: white;
@@ -56,7 +55,7 @@ h1 {
     padding: 4px 0;
 }
 
-/* === 셀 === */
+/* ===== 셀 ===== */
 .cell {
     padding: 8px 12px;
     font-size: 14px;
@@ -69,24 +68,57 @@ h1 {
     cursor: text;
     white-space: nowrap;
 }
-
 .cell:last-child {
     border-right: none;
 }
 
-/* === 헤더 (연한톤) === */
+/* ===== 헤더 ===== */
 .header {
     background: #FFEFF7;
 }
-
 .header .cell {
     font-weight: 700;
     color: #D04F7D;
     border-bottom: 2px solid #F8C7DB;
     contenteditable: false;
+    cursor: default;
 }
 
-/* === 갯수 색상 레벨 (연한 버전) === */
+/* ===== 버튼 영역 (행 마지막 칸) ===== */
+.action-cell {
+    position: relative;
+    width: 60px;
+    cursor: default;
+    border-right: none;
+}
+
+/* 버튼 컨테이너 - 기본 숨김 */
+.action-buttons {
+    display: none;
+    gap: 6px;
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* 버튼 스타일 (B형 아이콘 스타일) */
+.action-buttons button {
+    background: #FFD8EA;
+    border: none;
+    border-radius: 10px;
+    padding: 6px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    color: #D24E78;
+}
+
+/* 행 클릭 시 표시 */
+.row.show-actions .action-buttons {
+    display: flex;
+}
+
+/* ===== 색상 팔레트(연한핑크) ===== */
 :root {
     --lv0: #FFFFFF;
     --lv1: #FFF9FD;
@@ -99,7 +131,6 @@ h1 {
     --lv8: #FFBEDF;
     --lv9: #FFB6DA;
 }
-
 </style>
 </head>
 
@@ -115,22 +146,30 @@ h1 {
         <div class="row header">
             <div class="cell">아이디</div>
             <div class="cell">닉네임</div>
-            <div class="cell">갯수</div>
+            <div class="cell sort-btn" data-sort="amount">갯수 ⬍</div>
             <div class="cell">원플원</div>
             <div class="cell">공약</div>
             <div class="cell">역팬</div>
             <div class="cell">비고</div>
+            <div class="cell action-cell"></div>
         </div>
 
-        <!-- 샘플 -->
+        <!-- 예시 데이터 -->
         <div class="row data-row">
             <div class="cell" contenteditable="true">danggun</div>
             <div class="cell" contenteditable="true">당군</div>
             <div class="cell amount-cell" contenteditable="true">30000</div>
             <div class="cell" contenteditable="true">1</div>
             <div class="cell" contenteditable="true">출석</div>
-            <div class="cell ygp-cell" contenteditable="true"></div>
+            <div class="cell ygp-cell" contenteditable="false"></div>
             <div class="cell" contenteditable="true">VIP</div>
+
+            <div class="cell action-cell">
+                <div class="action-buttons">
+                    <button class="add">+</button>
+                    <button class="del">🗑</button>
+                </div>
+            </div>
         </div>
 
     </div>
@@ -140,87 +179,152 @@ h1 {
 
 <script>
 
-/* ----------------------------------
-   1) 갯수 숫자 → 색상 & 역팬 자동 처리
----------------------------------- */
-function applyRowStyle(row) {
+/* ===========================
+   1) 색상 & 역팬 계산
+=========================== */
+function applyRowStyle(row){
     const amountCell = row.querySelector(".amount-cell");
     const ygpCell    = row.querySelector(".ygp-cell");
-    if (!amountCell || !ygpCell) return;
+    if(!amountCell || !ygpCell) return;
 
-    const num = parseInt(amountCell.innerText.replace(/[^0-9]/g, ""), 10) || 0;
-
+    const num = parseInt(amountCell.innerText.replace(/[^0-9]/g,'')) || 0;
     ygpCell.innerText = num > 0 ? Math.round(num * 0.03) : "";
 
-    let levelVar = "--lv0";
-    if (num >= 100 && num <= 298) levelVar = "--lv1";
-    else if (num <= 999) levelVar = "--lv2";
-    else if (num <= 2999) levelVar = "--lv3";
-    else if (num <= 4999) levelVar = "--lv4";
-    else if (num <= 9999) levelVar = "--lv5";
-    else if (num <= 49999) levelVar = "--lv6";
-    else if (num <= 99999) levelVar = "--lv7";
-    else if (num <= 299999) levelVar = "--lv8";
-    else if (num >= 300000) levelVar = "--lv9";
+    let lv="--lv0";
+    if(num >=100 && num<=298) lv="--lv1";
+    else if(num<=999) lv="--lv2";
+    else if(num<=2999) lv="--lv3";
+    else if(num<=4999) lv="--lv4";
+    else if(num<=9999) lv="--lv5";
+    else if(num<=49999) lv="--lv6";
+    else if(num<=99999) lv="--lv7";
+    else if(num<=299999) lv="--lv8";
+    else lv="--lv9";
 
-    row.style.background = `var(${levelVar})`;
+    row.style.background = `var(${lv})`;
 }
 
-function refreshAll() {
+function refreshAll(){
     document.querySelectorAll(".data-row").forEach(applyRowStyle);
 }
 
 
-/* ----------------------------------
-   2) 열 너비 자동동기화 (핵심)
----------------------------------- */
-function syncColumnWidths() {
+/* ===========================
+   2) 열 너비 동기화
+=========================== */
+function syncColumnWidths(){
     const rows = [...document.querySelectorAll(".row")];
-    if (rows.length < 2) return;
+    if(rows.length < 2) return;
 
-    const colsCount = rows[0].children.length;
-    let colWidths = Array(colsCount).fill(0);
+    const cols = rows[0].children.length;
+    let widths = Array(cols).fill(0);
 
-    rows.forEach(row => {
-        [...row.children].forEach((cell, i) => {
-            colWidths[i] = Math.max(colWidths[i], cell.scrollWidth);
+    rows.forEach(row=>{
+        [...row.children].forEach((cell,i)=>{
+            widths[i] = Math.max(widths[i], cell.scrollWidth);
         });
     });
 
-    rows.forEach(row => {
-        [...row.children].forEach((cell, i) => {
-            cell.style.width = colWidths[i] + "px";
+    rows.forEach(row=>{
+        [...row.children].forEach((cell,i)=>{
+            cell.style.width = widths[i] + "px";
         });
     });
 }
 
 
-/* ----------------------------------
-   3) 배경 클릭 시 키보드 닫기
----------------------------------- */
+/* ===========================
+   3) 행 클릭 → 버튼 표시
+=========================== */
 document.addEventListener("click", (e)=>{
-    const isCell = e.target.closest(".cell");
-    if (!isCell) {
-        const active = document.activeElement;
-        if (active && active.classList.contains("cell")) {
-            active.blur();
-        }
+    const row = e.target.closest(".data-row");
+
+    document.querySelectorAll(".data-row").forEach(r=>r.classList.remove("show-actions"));
+
+    if(row){
+        row.classList.add("show-actions");
     }
 });
 
 
-/* ----------------------------------
-   4) 이벤트 바인딩
----------------------------------- */
+/* ===========================
+   4) 행 추가 / 삭제
+=========================== */
+function addRow(after){
+    const newRow = after.cloneNode(true);
+
+    newRow.querySelectorAll(".cell").forEach(c=>{
+        if(!c.classList.contains("action-cell")){
+            c.innerText = "";
+        }
+    });
+
+    after.insertAdjacentElement("afterend", newRow);
+    refreshAll();
+    syncColumnWidths();
+}
+
+function deleteRow(row){
+    const dataRows = document.querySelectorAll(".data-row");
+    if(dataRows.length <= 1){
+        alert("마지막 행은 삭제할 수 없습니다.");
+        return;
+    }
+    row.remove();
+    refreshAll();
+    syncColumnWidths();
+}
+
+/* 버튼 클릭 */
+document.addEventListener("click", (e)=>{
+    if(e.target.classList.contains("add")){
+        const row = e.target.closest(".data-row");
+        addRow(row);
+    }
+    if(e.target.classList.contains("del")){
+        const row = e.target.closest(".data-row");
+        deleteRow(row);
+    }
+});
+
+
+/* ===========================
+   5) 정렬 기능
+=========================== */
+let sortDir = 1; /* 1 = 오름 / -1 = 내림 */
+
+document.querySelector(".sort-btn").addEventListener("click", ()=>{
+    const rows = [...document.querySelectorAll(".data-row")];
+    const table = document.getElementById("table");
+
+    rows.sort((a,b)=>{
+        const A = parseInt(a.querySelector(".amount-cell").innerText.replace(/\D/g,"")) || 0;
+        const B = parseInt(b.querySelector(".amount-cell").innerText.replace(/\D/g,"")) || 0;
+        return (A-B) * sortDir;
+    });
+
+    sortDir *= -1; // 클릭할 때마다 방향 바뀜
+    rows.forEach(r=>table.appendChild(r));
+
+    refreshAll();
+    syncColumnWidths();
+});
+
+
+/* ===========================
+   6) 입력 변화 → 스타일 갱신
+=========================== */
 document.addEventListener("input", ()=>{
     refreshAll();
     syncColumnWidths();
 });
 
+
+/* 초기 실행 */
 window.onload = ()=>{
     refreshAll();
     syncColumnWidths();
-};
+}
 
 </script>
 
