@@ -14,10 +14,7 @@ body {
     color: #5b3b3b;
 }
 
-.wrap {
-    width: 100%;
-    max-width: 900px;
-}
+.wrap { max-width: 900px; width: 100%;}
 
 /* 제목 */
 h1 {
@@ -32,21 +29,22 @@ h1 {
 .table {
     display: flex;
     flex-direction: column;
-    gap: 10px; /* 행과 행 사이 간격 */
+    gap: 10px;
 }
 
-/* 행 – 양끝 둥글게 */
+/* 행 (둥근 카드형) */
 .row {
     display: grid;
-    grid-template-columns: 1.1fr 1.2fr 1fr 1fr 1.4fr 1fr 1.4fr;
+    grid-template-columns: 1.1fr 1.2fr 1fr 1fr 1.4fr 1fr 1.2fr auto;
     background: white;
     border-radius: 14px;
-    overflow: clip;         /* ← Safari 터치 문제 해결 */
-    pointer-events: none;   /* ← 행 전체가 이벤트 먹는 문제 해결 */
+    overflow: clip;
+    padding:0;
 }
 
+/* 셀 */
 .cell {
-    padding: 6px 6px;
+    padding: 6px;
     font-size: 13px;
     border-right: 1px solid #ffd9eb;
     border-bottom: 1px solid #ffd9eb;
@@ -54,240 +52,165 @@ h1 {
     outline: none;
     contenteditable: plaintext-only;
     white-space: nowrap;
-    user-select: text;
-
-    pointer-events: auto;  /* ← 터치/클릭이 셀에만 적용되게 */
 }
 
-/* 마지막 셀 오른쪽선 제거 */
-.cell:last-child {
-    border-right: none;
-}
+/* 마지막 셀 테두리 제거 */
+.cell:last-child { border-right: none; }
 
-/* 헤더 스타일 */
+/* 헤더는 수정 불가 */
 .header .cell {
     background: #FFE9F3;
     color: #D05B87;
     font-weight: 700;
     border-bottom: 2px solid #f5bad2;
-    contenteditable: false; /* 헤더는 수정 불가 */
+    contenteditable: false;
 }
 
-/* 선택 강조 (나중에 쓰고 싶을 수도 있어서 남김) */
-.row.selected {
-    outline: 2px solid #ff8aba;
+/* 행 조작 버튼 영역 */
+.actions {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    justify-content: center;
+    visibility: hidden;
+    padding: 4px;
+}
+.actions button {
+    border:none;
+    background:#ffbcd9;
+    padding:4px 6px;
+    border-radius:6px;
+    font-size:12px;
+    color:#6e3c52;
 }
 
-/* 색상 팔레트 (행 배경) */
+/* 선택된 행만 버튼 보이게 */
+.row.active .actions {
+    visibility: visible;
+}
+
+/* 색상 팔레트 */
 :root {
-    --lv0: #FFFFFF;  /* 0~99 아무것도 아님 */
-    --lv1: #FFF6FB;  /* 100~298 */
-    --lv2: #FFEFF7;  /* 299~999 */
-    --lv3: #FFE6F3;  /* 1000~2999 */
-    --lv4: #FFDEEF;  /* 3000~4999 */
-    --lv5: #FFD5EB;  /* 5000~9999 */
-    --lv6: #FFCDE6;  /* 10000~49999 */
-    --lv7: #FFC5E2;  /* 50000~99999 */
-    --lv8: #FFBCD9;  /* 100000~299999 */
-    --lv9: #FFB2D0;  /* 300000~ */
-}
-
-/* 컨텍스트 메뉴 (위/아래 행 삽입/삭제) */
-.context-menu {
-    position: absolute;
-    background: white;
-    border: 1px solid #e4b7cc;
-    border-radius: 10px;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.12);
-    padding: 6px;
-    z-index: 9999;
-    font-size: 14px;
-    min-width: 140px;
-}
-.context-menu div {
-    padding: 8px 10px;
-    color: #d94872;
-    text-align: center;
-}
-.context-menu div:hover {
-    background: #ffe6f1;
-    cursor: pointer;
+    --lv0: #FFFFFF;
+    --lv1: #FFF6FB;
+    --lv2: #FFEFF7;
+    --lv3: #FFE6F3;
+    --lv4: #FFDEEF;
+    --lv5: #FFD5EB;
+    --lv6: #FFCDE6;
+    --lv7: #FFC5E2;
+    --lv8: #FFBCD9;
+    --lv9: #FFB2D0;
 }
 </style>
 </head>
+
 <body>
 <div class="wrap">
 
-    <h1>🐰 C9 1회차 낭플단</h1>
+<h1>🐰 C9 1회차 낭플단</h1>
 
-    <div class="table" id="nang-table">
+<div class="table" id="table">
 
-        <!-- 헤더 -->
-        <div class="row header">
-            <div class="cell">아이디</div>
-            <div class="cell">닉네임</div>
-            <div class="cell">갯수</div>
-            <div class="cell">원플원</div>
-            <div class="cell">공약</div>
-            <div class="cell">역팬</div>
-            <div class="cell">비고</div>
-        </div>
-
-        <!-- 샘플 데이터 1줄 (복사해서 쓰면 됨) -->
-        <div class="row data-row">
-            <div class="cell">danggun</div>
-            <div class="cell">당군</div>
-            <div class="cell amount-cell">30000</div>
-            <div class="cell">1</div>
-            <div class="cell">출석</div>
-            <div class="cell ygp-cell"></div>
-            <div class="cell">VIP</div>
-        </div>
-
+    <!-- 헤더 -->
+    <div class="row header">
+        <div class="cell">아이디</div>
+        <div class="cell">닉네임</div>
+        <div class="cell">갯수</div>
+        <div class="cell">원플원</div>
+        <div class="cell">공약</div>
+        <div class="cell">역팬</div>
+        <div class="cell">비고</div>
+        <div></div>
     </div>
+
+    <!-- 예시 데이터 -->
+    <div class="row data">
+        <div class="cell">danggun</div>
+        <div class="cell">당군</div>
+        <div class="cell amount">30000</div>
+        <div class="cell">1</div>
+        <div class="cell">출석</div>
+        <div class="cell ygp"></div>
+        <div class="cell">VIP</div>
+
+        <div class="actions">
+            <button class="add">＋</button>
+            <button class="del">🗑</button>
+        </div>
+    </div>
+
+</div>
+
 </div>
 
 <script>
-const isMobile = 'ontouchstart' in window;
+const table = document.getElementById("table");
 
-/* -----------------------------
- 갯수에 따른 색상 + 역팬 3% 계산
------------------------------ */
-function applyRowStyle(row) {
-    const amountCell = row.querySelector(".amount-cell");
-    const ygpCell    = row.querySelector(".ygp-cell");
-    if (!amountCell || !ygpCell) return;
+/* --- 행 배경 + 역팬 계산 --- */
+function updateRow(row){
+    const amountCell = row.querySelector(".amount");
+    const ygpCell    = row.querySelector(".ygp");
+    if(!amountCell || !ygpCell) return;
 
-    const num = parseInt(amountCell.innerText.replace(/[^0-9]/g, ""), 10) || 0;
-
-    // 3% 역팬 (반올림)
+    const num = parseInt(amountCell.innerText.replace(/[^0-9]/g,'')) || 0;
     ygpCell.innerText = num > 0 ? Math.round(num * 0.03) : "";
 
-    let levelVar = "--lv0";
-    if (num >= 100 && num <= 298)       levelVar = "--lv1";
-    else if (num >= 299 && num <= 999)  levelVar = "--lv2";
-    else if (num >= 1000 && num <= 2999)   levelVar = "--lv3";
-    else if (num >= 3000 && num <= 4999)   levelVar = "--lv4";
-    else if (num >= 5000 && num <= 9999)   levelVar = "--lv5";
-    else if (num >= 10000 && num <= 49999) levelVar = "--lv6";
-    else if (num >= 50000 && num <= 99999) levelVar = "--lv7";
-    else if (num >= 100000 && num <= 299999) levelVar = "--lv8";
-    else if (num >= 300000)              levelVar = "--lv9";
+    let lv="--lv0";
+    if(num>=100 && num<=298) lv="--lv1";
+    else if(num<=999) lv="--lv2";
+    else if(num<=2999) lv="--lv3";
+    else if(num<=4999) lv="--lv4";
+    else if(num<=9999) lv="--lv5";
+    else if(num<=49999) lv="--lv6";
+    else if(num<=99999) lv="--lv7";
+    else if(num<=299999) lv="--lv8";
+    else if(num>=300000) lv="--lv9";
 
-    row.style.background = `var(${levelVar})`;
+    row.style.background = `var(${lv})`;
 }
 
-/* 테이블 전체 다시 계산 */
-function refreshAllRows() {
-    document.querySelectorAll(".row.data-row").forEach(applyRowStyle);
-}
+/* 전체 업데이트 */
+function refreshAll(){ document.querySelectorAll(".row.data").forEach(updateRow); }
+refreshAll();
 
-/* -----------------------------
- 행 삽입 / 삭제
------------------------------ */
-function createEmptyRow() {
-    const row = document.createElement("div");
-    row.className = "row data-row";
-    row.innerHTML = `
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell amount-cell">0</div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell ygp-cell"></div>
-        <div class="cell"></div>
-    `;
-    return row;
-}
+/* --- 클릭 시 해당 행 활성화 --- */
+table.addEventListener("click", e=>{
+    const row = e.target.closest(".row.data");
+    if(!row) return;
 
-function insertRow(baseRow, position) {
-    const table = document.getElementById("nang-table");
-    const newRow = createEmptyRow();
+    document.querySelectorAll(".row.data").forEach(r=>r.classList.remove("active"));
+    row.classList.add("active");
+});
 
-    if (position === "above") {
-        table.insertBefore(newRow, baseRow);
-    } else {
-        table.insertBefore(newRow, baseRow.nextSibling);
-    }
-    applyRowStyle(newRow);
-}
+/* --- input 발생 시 계산 --- */
+table.addEventListener("input", e=>{
+    const row = e.target.closest(".row.data");
+    if(row) updateRow(row);
+});
 
-/* 선택된 행 삭제 – 최소 1줄 남기는 건 원하면 추가 가능 */
-function deleteRow(row) {
+/* --- 행 추가 --- */
+table.addEventListener("click", e=>{
+    if(!e.target.classList.contains("add")) return;
+    const base = e.target.closest(".row.data");
+
+    const newRow = base.cloneNode(true);
+    newRow.querySelectorAll(".cell").forEach(c=>{
+        if(!c.classList.contains("amount") && !c.classList.contains("ygp")){
+            c.innerText="";
+        }
+    });
+
+    base.insertAdjacentElement("afterend", newRow);
+    refreshAll();
+});
+
+/* --- 행 삭제 --- */
+table.addEventListener("click", e=>{
+    if(!e.target.classList.contains("del")) return;
+    const row = e.target.closest(".row.data");
     row.remove();
-}
-
-/* -----------------------------
- 컨텍스트 메뉴 생성
------------------------------ */
-function showContextMenu(event, row) {
-    // 기존 메뉴 제거
-    document.querySelectorAll(".context-menu").forEach(el => el.remove());
-
-    const menu = document.createElement("div");
-    menu.className = "context-menu";
-
-    const x = (event.clientX || event.touches?.[0].clientX || 0) + 130;
-    const y = (event.clientY || event.touches?.[0].clientY || 0) - 10;
-
-    menu.style.left = x + "px";
-    menu.style.top  = y + "px";
-
-    menu.innerHTML = `
-        <div onclick="insertRow(window._ctxRow,'above')">▲ 위에 행 삽입</div>
-        <div onclick="insertRow(window._ctxRow,'below')">▼ 아래 행 삽입</div>
-        <div onclick="deleteRow(window._ctxRow)">🗑 행 삭제</div>
-    `;
-
-    window._ctxRow = row;
-    document.body.appendChild(menu);
-}
-
-/* -----------------------------
- 이벤트 바인딩
------------------------------ */
-const table = document.getElementById("nang-table");
-
-/* 입력 발생 시 – 갯수 칸 변경 감지해서 스타일 다시 적용 */
-table.addEventListener("input", (e) => {
-    const row = e.target.closest(".row.data-row");
-    if (!row) return;
-    // 갯수 칸이 아니어도, 그냥 해당 줄만 매번 다시 계산
-    applyRowStyle(row);
 });
-
-/* PC – 우클릭 시 메뉴 띄우기 (기본 메뉴도 그대로 놔둠) */
-table.addEventListener("contextmenu", (e) => {
-    const row = e.target.closest(".row.data-row");
-    if (!row) return;
-    showContextMenu(e, row);
-    // e.preventDefault();  // 기본 메뉴도 쓰고 싶다고 해서 안 막음
-});
-
-/* 모바일 – 롱프레스 시 메뉴 띄우기 */
-if (isMobile) {
-    let longPressTimer = null;
-    table.addEventListener("touchstart", (e) => {
-        const row = e.target.closest(".row.data-row");
-        if (!row) return;
-        longPressTimer = setTimeout(() => {
-            showContextMenu(e, row);
-        }, 600); // 0.6초 꾹 눌러야 메뉴
-    });
-
-    table.addEventListener("touchend", () => {
-        if (longPressTimer) clearTimeout(longPressTimer);
-    });
-}
-
-/* 바깥 아무데나 클릭하면 메뉴 닫기 */
-document.addEventListener("click", (e) => {
-    if (e.target.closest(".context-menu")) return;
-    document.querySelectorAll(".context-menu").forEach(el => el.remove());
-});
-
-/* 초기 한 번 스타일 적용 */
-refreshAllRows();
 </script>
 
 </body>
