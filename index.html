@@ -7,19 +7,18 @@
 
 <style>
 body {
-    background: #FFF7FA;
-    font-family: "Pretendard", -apple-system, system-ui, sans-serif;
+    background: #FFF6FA;
+    font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     display: flex;
     justify-content: center;
+    padding: 20px 16px;
     margin: 0;
-    padding: 20px 14px;
     color: #4c2d3b;
 }
-
-/* 메인 컨테이너 */
 .wrap {
     width: 100%;
     max-width: 1080px;
+    margin: 0 auto;
 }
 
 /* 제목 */
@@ -27,105 +26,198 @@ h1 {
     text-align: center;
     font-size: 22px;
     font-weight: 800;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
     color: #FF8FB2;
 }
 
-/* 테이블 래퍼 */
+/* 스크롤 래퍼 */
+.table-scroll {
+    overflow-x: auto;
+    padding-bottom: 4px;
+}
+
+/* 테이블(행 묶음) */
 .table {
     display: flex;
     flex-direction: column;
-    gap: 6px; /* 행 간 간격 줄임 */
+    gap: 4px;
+    min-width: 760px;
 }
 
-/* 개별 행 */
+/* 행 */
 .row {
     display: flex;
     background: white;
-    border-radius: 20px;
-    padding: 4px 0; /* 🔥 높이 줄임 */
+    border-radius: 24px;
     overflow: hidden;
-    box-shadow: 0 2px 6px rgba(255,140,170,0.12);
+    padding: 0;
+    min-height: 28px;
 }
 
-/* 셀 */
+/* 셀 공통 */
 .cell {
-    flex: 1;
-    padding: 6px 8px; /* 높이 줄임 */
-    font-size: 14px;
-    text-align: center;
-    display: flex;
-    align-items: center;
+    padding: 2px 8px;
+    font-size: 13px;
+    display: inline-flex;
     justify-content: center;
-    border-right: 1px solid #FFE4EF;
-    contenteditable: true;
+    align-items: center;
+    text-align: center;
+    border-right: 1px solid #FFE1EF;
+    outline: none;
+    cursor: text;
     white-space: nowrap;
 }
-
 .cell:last-child {
     border-right: none;
 }
 
 /* 헤더 */
 .header {
-    background: #FFEFF6;
+    background: #FFEFF7;
 }
-
 .header .cell {
     font-weight: 700;
-    color: #CF4C77;
-    padding: 8px 8px;
+    color: #D04F7D;
+    border-bottom: 2px solid #F8C7DB;
     contenteditable: false;
+    cursor: default;
 }
 
-/* 연한 파스텔 색상 (UI Prepped) */
+/* 합계 행 */
+.summary-row {
+    background: #FFF9FD;
+    font-weight: 700;
+    color: #cc507a;
+}
+
+/* 색상단계 */
 :root {
-    --lv0: #FFFFFF;
-    --lv1: #FFF9FD;
-    --lv2: #FFF3FA;
-    --lv3: #FFE9F4;
-    --lv4: #FFE0EF;
-    --lv5: #FFD7EB;
-    --lv6: #FFCEE7;
-    --lv7: #FFC6E3;
-    --lv8: #FFBEDF;
-    --lv9: #FFB6DA;
+    --lv1:#FFF9FD;
+    --lv2:#FFEFF6;
+    --lv3:#FFE4F1;
+    --lv4:#FFD9EC;
+    --lv5:#FFCFE8;
+    --lv6:#FFC6E1;
+    --lv7:#FFBDD9;
+    --lv8:#FFB3D1;
+    --lv9:#FFA9CA;
 }
 </style>
 </head>
 
 <body>
-
 <div class="wrap">
 
     <h1>🐰 C9 1회차 낭플단</h1>
 
-    <div class="table">
-        <!-- 헤더 -->
-        <div class="row header">
-            <div class="cell">아이디</div>
-            <div class="cell">닉네임</div>
-            <div class="cell">낭플</div>
-            <div class="cell">원플원</div>
-            <div class="cell">공약</div>
-            <div class="cell">역팬</div>
-            <div class="cell">비고</div>
-        </div>
+    <div class="table-scroll">
+        <div class="table" id="table">
 
-        <!-- 샘플 행 (테스트용) -->
-        <div class="row">
-            <div class="cell">danggun</div>
-            <div class="cell">당군</div>
-            <div class="cell">30000</div>
-            <div class="cell">1</div>
-            <div class="cell">출석</div>
-            <div class="cell">900</div>
-            <div class="cell">VIP</div>
-        </div>
+            <!-- 헤더 -->
+            <div class="row header">
+                <div class="cell">아이디</div>
+                <div class="cell">닉네임</div>
+                <div class="cell">낭플</div>
+                <div class="cell">원플원</div>
+                <div class="cell">공약</div>
+                <div class="cell">역팬</div>
+                <div class="cell">비고</div>
+            </div>
 
+        </div>
     </div>
 
 </div>
+
+<script>
+/* ------------------------------
+   🔹 STEP 2: 데이터 삽입
+------------------------------ */
+
+const data = [
+["dksl2233","[C9]잘해",210092,"","정성방셀 + 역팬 3% or 배민 50만원 + 방송소원권 + 식데",6303,""],
+["fox11241","#woorinangni",50000,"","카톡 + 역팬 3% + 정성방셀 + 소소한선물",1500,""],
+["hantong113","예수형2↑",15151,"","카톡 + 역팬 3% + 정성방셀 or 원하는 직원과 방셀(대표님 포함)",455,""],
+["knifehoo","김배터",12790,"","카톡 + 역팬 3% + 정성방셀 or 원하는 직원과 방셀(대표님 포함)",384,""],
+["airess16","옴브리뉴팬",12442,"","카톡 + 역팬 3% + 정성방셀 or 원하는 직원과 방셀(대표님 포함)",373,""],
+["wjddudtjr777","낭무새",11574,"","카톡 + 역팬 3% + 정성방셀 or 원하는 직원과 방셀(대표님 포함)",347,""],
+["kokoko2151","로넌",11473,"","카톡 + 역팬 3% + 정성방셀 or 원하는 직원과 방셀(대표님 포함)",344,""],
+["jounguk892","꽂을때희열",9295,"","역팬3% + 방셀 (사진 2장, 움짤 1장)",279,""],
+["zxczsd235","울쎄라형2↑",5734,"","역팬3% + 방셀 (사진 2장, 움짤 1장)",172,""],
+["malguman","도맑음",5289,"","역팬3% + 방셀 (사진 2장, 움짤 1장)",159,""],
+["pretty5869","이쁘면깅예솔",5146,"","역팬3% + 방셀 (사진 2장, 움짤 1장)",154,""],
+["noble275","꼬라지하고는",5000,"","역팬3% + 방셀 (사진 2장, 움짤 1장)",150,""],
+["22noka","대출갚는더덕",2400,"","역팬 3% + 고정 사진 방셀",72,""],
+["tjd01084","낭겨울♥",2044,"","역팬 3% + 고정 사진 방셀",61,""],
+["kegsdop42","조블등장",1572,"","역팬 3% + 고정 사진 방셀",47,""],
+["nowtomorrow","초코톡핑",1329,"","역팬 3% + 고정 사진 방셀",40,""],
+["stevendan85","스티븐댄",1234,"","역팬 3% + 고정 사진 방셀",37,""],
+["gkeksty","사업자대출",1233,"","역팬 3% + 고정 사진 방셀",37,""],
+["sang6111","시골청년빵훈",499,"","공놀이로 냠냠이 3만원권 5명",15,""],
+["begin0824","빙고쥬스",346,"","공놀이로 냠냠이 3만원권 5명",10,""],
+["ksh5154","검은눈토끼",300,"","공놀이로 냠냠이 3만원권 5명",9,""],
+["akxkrxkr","[C9]ooｖ",299,"","공놀이로 냠냠이 3만원권 5명",9,""],
+["leewooyul","수희김",200,"","공놀이로 남냠이 1만원권 5명",6,""],
+["krhtlgh123","골타369",200,"","공놀이로 남냠이 1만원권 5명",6,""],
+["kpcm800610","마이형2↑",109,"","공놀이로 남냠이 1만원권 5명",3,""],
+["dumbo0131","당군!",109,"","공놀이로 남냠이 1만원권 5명",3,""],
+["mammaq","ΚΕΝΖΙ",100,"","공놀이로 남냠이 1만원권 5명",3,""],
+["milla0315","헤이즐♡",100,"","공놀이로 남냠이 1만원권 5명","",""],
+["smsm4162","프로겜블러",100,"","공놀이로 남냠이 1만원권 5명","",""],
+["hilase","출구형2↑",100,"","공놀이로 남냠이 1만원권 5명","",""],
+["abss1003","잘먹는족구",100,"","공놀이로 남냠이 1만원권 5명","",""],
+["poby4280","이희형",100,"","공놀이로 남냠이 1만원권 5명","",""],
+["n6628220","어둠의보사단",100,"","공놀이로 남냠이 1만원권 5명","",""],
+["aisaromi","씨구",100,"","공놀이로 남냠이 1만원권 5명","",""],
+["kimjin7204","박화요요",100,"","공놀이로 남냠이 1만원권 5명","",""],
+["kimsumgk77","무상도",100,"","공놀이로 남냠이 1만원권 5명","",""],
+["nowfree1004","고구마에김치",100,"","공놀이로 남냠이 1만원권 5명","",""],
+["slionics","☆패션☆",100,"","공놀이로 남냠이 1만원권 5명","",""],
+["vdfntqa85","##38광땡",100,"","공놀이로 남냠이 1만원권 5명","",""]
+];
+
+const table = document.getElementById("table");
+
+// 데이터 추가
+data.forEach(row=>{
+    const div = document.createElement("div");
+    div.classList.add("row");
+    row.forEach(v=>{
+        const c=document.createElement("div");
+        c.classList.add("cell");
+        c.textContent=v;
+        div.appendChild(c);
+    });
+    table.appendChild(div);
+});
+
+
+/* 🔹 합계 자동 계산 */
+function updateSummary(){
+    let totalA = 0;
+    let totalY = 0;
+
+    data.forEach(r=>{
+        totalA += r[2] || 0;
+        totalY += r[5] || 0;
+    });
+
+    const sum = document.createElement("div");
+    sum.classList.add("row","summary-row");
+    sum.innerHTML = `
+        <div class="cell">합계</div>
+        <div class="cell"></div>
+        <div class="cell">${totalA}</div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell">${totalY}</div>
+        <div class="cell"></div>
+    `;
+    table.appendChild(sum);
+}
+
+updateSummary();
+</script>
 
 </body>
 </html>
