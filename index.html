@@ -3,15 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>입력 테스트</title>
+<title>🐰 C9 1회차 낭플단</title>
 
 <style>
 body {
-    background: #FFEFE8;
-    font-family: system-ui, sans-serif;
+    background: #FFF7F1;
+    font-family: "Pretendard", system-ui, sans-serif;
     display: flex;
     justify-content: center;
     padding: 40px 16px;
+    color: #5b3b3b;
 }
 
 .wrap {
@@ -19,64 +20,86 @@ body {
     max-width: 900px;
 }
 
-/* 단순 테이블 스타일 */
+/* 제목 */
+h1 {
+    text-align: center;
+    margin-bottom: 16px;
+    color: #FF9DB5;
+    font-weight: 800;
+    font-size: 20px;
+}
+
+/* 테이블 */
+.table {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
 .row {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1.1fr 1.2fr 1fr 1fr 1.4fr 1fr 1.4fr;
     background: white;
-    margin-bottom: 10px;
     border-radius: 14px;
     overflow: hidden;
 }
 
 .cell {
     padding: 10px;
-    border: 1px solid #FFC4D9;
     text-align: center;
+    border-right: 1px solid #ffd9eb;
+    border-bottom: 1px solid #ffd9eb;
     background: white;
-    contenteditable: true;
+    font-size: 14px;
     outline: none;
-    font-size: 16px;
+    contenteditable: true;
 }
 
-/* 포커스 시 */
-.cell:focus {
-    background: #FFE6F3;
+/* 헤더 */
+.header .cell {
+    background: #FFE9F3;
+    color: #D05B87;
+    font-weight: 700;
+    contenteditable: false;
+}
+
+.cell:last-child {
+    border-right: none;
 }
 </style>
+
 </head>
 
 <body>
 <div class="wrap">
 
-    <div class="row">
+<h1>🐰 C9 1회차 낭플단</h1>
+
+<div class="table">
+
+    <div class="row header">
         <div class="cell">아이디</div>
         <div class="cell">닉네임</div>
         <div class="cell">갯수</div>
+        <div class="cell">원플원</div>
+        <div class="cell">공약</div>
+        <div class="cell">역팬</div>
+        <div class="cell">비고</div>
     </div>
 
-    <div class="row data">
+    <div class="row">
         <div class="cell">danggun</div>
         <div class="cell">당군</div>
         <div class="cell">30000</div>
+        <div class="cell">1</div>
+        <div class="cell">출석</div>
+        <div class="cell">900</div>
+        <div class="cell">VIP</div>
     </div>
 
 </div>
 
-<script>
-// 🔥 강제 포커스 적용
-document.addEventListener("click", (e) => {
-    const cell = e.target.closest(".cell");
-    if (!cell) return;
-    cell.focus();
-});
+</div>
 
-// 🔥 모바일 사파리용 터치 처리
-document.addEventListener("touchend", (e) => {
-    const cell = e.target.closest(".cell");
-    if (!cell) return;
-    setTimeout(() => cell.focus(), 10);
-});
-</script>
 </body>
 </html>
