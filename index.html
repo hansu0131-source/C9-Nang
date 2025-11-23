@@ -52,6 +52,7 @@ h1 {
     border: 1px solid #ffe4ef;
     box-shadow: 0 1px 2px rgba(0,0,0,0.05);
     outline: none;
+    user-select: none; /* 드래그 선택 방지 */
 }
 
 .header .cell {
@@ -60,6 +61,7 @@ h1 {
     font-weight: 700;
 }
 
+/* 수정 중 시각 효과 */
 .cell:focus {
     background: #fff3fb;
     border-color: #ffb6d2;
@@ -98,7 +100,7 @@ h1 {
             <div class="cell">비고</div>
         </div>
 
-        <!-- 예시 데이터 -->
+        <!-- 예시 행 -->
         <div class="row" data-amount="1200">
             <div class="cell" contenteditable="true">danggun</div>
             <div class="cell" contenteditable="true">당군</div>
@@ -107,16 +109,6 @@ h1 {
             <div class="cell" contenteditable="true">출석</div>
             <div class="cell calc-ygp" contenteditable="true"></div>
             <div class="cell" contenteditable="true">VIP</div>
-        </div>
-
-        <div class="row" data-amount="31000">
-            <div class="cell" contenteditable="true">rabbit01</div>
-            <div class="cell" contenteditable="true">토기</div>
-            <div class="cell" contenteditable="true">31000</div>
-            <div class="cell" contenteditable="true">2</div>
-            <div class="cell" contenteditable="true">팬미팅</div>
-            <div class="cell calc-ygp" contenteditable="true"></div>
-            <div class="cell" contenteditable="true"></div>
         </div>
 
     </div>
@@ -128,10 +120,8 @@ document.querySelectorAll(".row").forEach(row => {
     const amount = Number(row.dataset.amount || 0);
     const fanCell = row.querySelector(".calc-ygp");
 
-    // 역팬 자동 계산 (반올림)
     if (fanCell) fanCell.textContent = Math.round(amount * 0.03);
 
-    // 색상 단계 지정
     let level = "--lv1";
     if(amount >= 299 && amount <= 999) level = "--lv2";
     else if(amount >= 1000 && amount <= 2999) level = "--lv3";
@@ -144,9 +134,37 @@ document.querySelectorAll(".row").forEach(row => {
 
     row.style.background = `var(${level})`;
 
-    // 갯수 텍스트 강조
     const amountCell = row.children[2];
     if(amountCell) amountCell.style.color = "#C83F7E";
+});
+
+
+// ---------------- 클릭/터치로 복사 기능 ----------------
+document.querySelectorAll(".cell").forEach(cell => {
+    cell.addEventListener("click", () => {
+        const text = cell.innerText.trim();
+        if(!text) return;
+        navigator.clipboard.writeText(text);
+        cell.style.backgroundColor = "#ffe4f2";
+        setTimeout(() => cell.style.backgroundColor = "", 300);
+    });
+});
+
+// ---------------- 길게 눌러도 복사 ----------------
+let touchTimer;
+document.querySelectorAll(".cell").forEach(cell => {
+    cell.addEventListener("touchstart", () => {
+        touchTimer = setTimeout(() => {
+            const text = cell.innerText.trim();
+            if(text){
+                navigator.clipboard.writeText(text);
+                cell.style.backgroundColor = "#ffe4f2";
+                setTimeout(() => cell.style.backgroundColor = "", 300);
+            }
+        }, 400);
+    });
+
+    cell.addEventListener("touchend", () => clearTimeout(touchTimer));
 });
 </script>
 
