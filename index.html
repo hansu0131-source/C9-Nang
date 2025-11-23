@@ -37,38 +37,33 @@ h1 {
     gap: 10px;
 }
 
-/* 행 */
 .row {
     display: grid;
-    grid-template-columns: repeat(7, max-content);
-    background: #FFFFFF;
-    border-radius: 16px;
-    padding: 8px 0;
-    overflow: hidden;
-    box-shadow: 0 2px 6px rgba(255,150,180,0.12);
+    grid-template-columns: repeat(7, minmax(min-content, max-content));
+    background: white;
+    border-radius: 22px;
+    padding: 4px 0;
+    overflow: visible;
+    box-shadow: 0 2px 8px rgba(255,150,180,0.10);
 }
 
-/* 셀 */
 .cell {
-    padding: 10px 8px;
+    padding: 6px 8px;
     font-size: 14px;
-    border-right: 1px solid #FFE1EF;
-    outline: none;
-    cursor: text;
 
-    /* 중앙 정렬 */
     display: flex;
     justify-content: center;
     align-items: center;
 
-    /* 줄바꿈 허용 + 내용기준 크기 */
     white-space: normal;
     word-break: break-word;
 
-    /* 너무 좁아지지 않게 */
     min-width: 50px;
     max-width: 240px;
-    text-align: center;
+
+    border-right: 1px solid #FFE1EF;
+    outline: none;
+    cursor: text;
 }
 
 /* 마지막 셀 구분선 제거 */
@@ -140,7 +135,6 @@ h1 {
 </div>
 
 <script>
-/* 🔥 열 너비 동적 계산 — 늘어남 + 줄어듦 둘 다 지원 */
 function resizeColumns() {
     const rows = document.querySelectorAll(".row.data");
     if (!rows.length) return;
@@ -148,19 +142,16 @@ function resizeColumns() {
     const firstRow = rows[0];
     const colCount = firstRow.children.length;
 
-    // 🔥 매번 완전히 초기화 (핵심)
     const maxWidths = Array(colCount).fill(0);
 
-    // 🔥 모든 행 돌면서 열별 최대 길이 재측정
     rows.forEach(row => {
         [...row.children].forEach((cell, i) => {
-            const width = cell.scrollWidth;
+            const width = measureTextWidth(cell.innerText) + 40;
             maxWidths[i] = Math.max(maxWidths[i], width);
         });
     });
 
-    // 🔥 측정된 값으로 열 너비 설정
-    const colWidths = maxWidths.map(w => `${w + 20}px`).join(" ");
+    const colWidths = maxWidths.map(w => `${w}px`).join(" ");
     document.querySelectorAll(".row").forEach(row => {
         row.style.gridTemplateColumns = colWidths;
     });
