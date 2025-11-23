@@ -6,7 +6,7 @@
 <title>🐰 C9 1회차 낭플단</title>
 
 <style>
-/* ===== 전체 배경 / 기본 폰트 ===== */
+/* === 전체 배경 === */
 body {
     background: #FFF6FA;
     font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
@@ -17,14 +17,13 @@ body {
     margin: 0;
 }
 
-/* ===== 타이틀 영역 컨테이너 ===== */
+/* === 컨테이너 === */
 .wrap {
     width: 100%;
-    max-width: 900px;
     margin: 0 auto;
 }
 
-/* ===== 제목 ===== */
+/* === 제목 === */
 h1 {
     text-align: center;
     font-size: 22px;
@@ -33,135 +32,117 @@ h1 {
     color: #FF8FB2;
 }
 
-/* ===== 스크롤 가능한 영역 (A형: 가로 스크롤 허용) ===== */
+/* === 가로 스크롤 영역 === */
 .table-scroll {
-    overflow-x: auto;           /* 가로로 넘치면 스크롤 */
-    padding-bottom: 4px;
+    overflow-x: auto;
+    padding-bottom: 6px;
 }
 
-/* ===== 테이블(행 묶음) ===== */
+/* === 테이블 구조 === */
 .table {
     display: flex;
     flex-direction: column;
-    gap: 10px;                  /* 행 사이 여백 */
-    min-width: 650px;           /* 너무 찌그러지지 않게 최소폭만 */
+    gap: 10px;
+    min-width: 650px;
 }
 
-/* ===== 행 (카드형) ===== */
+/* === 행 === */
 .row {
-    display: grid;
-    grid-template-columns:
-        minmax(90px, auto)  /* 아이디 */
-        minmax(90px, auto)  /* 닉네임 */
-        minmax(70px, auto)  /* 갯수 */
-        minmax(70px, auto)  /* 원플원 */
-        minmax(80px, auto)  /* 공약 */
-        minmax(70px, auto)  /* 역팬 */
-        minmax(80px, auto); /* 비고 */
-
+    display: flex;
     background: white;
     border-radius: 26px;
-    padding: 4px 0;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(255,150,180,0.10);
+    box-shadow: 0 2px 8px rgba(255,150,180,0.08);
+    padding: 4px 0;
 }
 
-/* ===== 셀 ===== */
+/* === 셀 === */
 .cell {
-    padding: 8px 10px;
+    padding: 8px 12px;
     font-size: 14px;
-
-    display: flex;
+    display: inline-flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-
-    white-space: nowrap;        /* 한 줄 유지 */
     border-right: 1px solid #FFE1EF;
     outline: none;
     cursor: text;
+    white-space: nowrap;
 }
 
 .cell:last-child {
     border-right: none;
 }
 
-/* ===== 헤더 ===== */
+/* === 헤더 (연한톤) === */
 .header {
-    background: #FFE8F4;
+    background: #FFEFF7;
 }
 
 .header .cell {
     font-weight: 700;
-    color: #D55382;
-    border-bottom: 2px solid #F5BAD2;
+    color: #D04F7D;
+    border-bottom: 2px solid #F8C7DB;
     contenteditable: false;
-    cursor: default;
 }
 
-/* ===== 색상 팔레트 (갯수 구간별 행 배경) ===== */
+/* === 갯수 색상 레벨 (연한 버전) === */
 :root {
-    --lv0: #FFFFFF;  /* 0~99 */
-    --lv1: #FFF6FB;  /* 100~298 */
-    --lv2: #FFEFF7;  /* 299~999 */
-    --lv3: #FFE6F3;  /* 1000~2999 */
-    --lv4: #FFDEEF;  /* 3000~4999 */
-    --lv5: #FFD5EB;  /* 5000~9999 */
-    --lv6: #FFCDE6;  /* 10000~49999 */
-    --lv7: #FFC5E2;  /* 50000~99999 */
-    --lv8: #FFBCD9;  /* 100000~299999 */
-    --lv9: #FFB2D0;  /* 300000~ */
+    --lv0: #FFFFFF;
+    --lv1: #FFF9FD;
+    --lv2: #FFF3FA;
+    --lv3: #FFE9F4;
+    --lv4: #FFE0EF;
+    --lv5: #FFD7EB;
+    --lv6: #FFCEE7;
+    --lv7: #FFC6E3;
+    --lv8: #FFBEDF;
+    --lv9: #FFB6DA;
 }
 
-/* 모바일에서 살짝 축소 (캡쳐용 비율) */
-@media (max-width: 600px) {
-    .wrap {
-        transform: scale(0.9);
-        transform-origin: top center;
-    }
-}
 </style>
 </head>
 
 <body>
 <div class="wrap">
 
-    <h1>🐰 C9 1회차 낭플단</h1>
+<h1>🐰 C9 1회차 낭플단</h1>
 
-    <div class="table-scroll">
-        <div class="table" id="table">
+<div class="table-scroll">
+    <div class="table" id="table">
 
-            <!-- 헤더 -->
-            <div class="row header">
-                <div class="cell">아이디</div>
-                <div class="cell">닉네임</div>
-                <div class="cell">갯수</div>
-                <div class="cell">원플원</div>
-                <div class="cell">공약</div>
-                <div class="cell">역팬</div>
-                <div class="cell">비고</div>
-            </div>
-
-            <!-- 샘플 데이터 1줄 (복사해서 사용하면 됨) -->
-            <div class="row data-row">
-                <div class="cell" contenteditable="true">danggun</div>
-                <div class="cell" contenteditable="true">당군</div>
-                <div class="cell amount-cell" contenteditable="true">30000</div>
-                <div class="cell" contenteditable="true">1</div>
-                <div class="cell" contenteditable="true">출석</div>
-                <div class="cell ygp-cell" contenteditable="true"></div>
-                <div class="cell" contenteditable="true">VIP</div>
-            </div>
-
+        <!-- 헤더 -->
+        <div class="row header">
+            <div class="cell">아이디</div>
+            <div class="cell">닉네임</div>
+            <div class="cell">갯수</div>
+            <div class="cell">원플원</div>
+            <div class="cell">공약</div>
+            <div class="cell">역팬</div>
+            <div class="cell">비고</div>
         </div>
+
+        <!-- 샘플 -->
+        <div class="row data-row">
+            <div class="cell" contenteditable="true">danggun</div>
+            <div class="cell" contenteditable="true">당군</div>
+            <div class="cell amount-cell" contenteditable="true">30000</div>
+            <div class="cell" contenteditable="true">1</div>
+            <div class="cell" contenteditable="true">출석</div>
+            <div class="cell ygp-cell" contenteditable="true"></div>
+            <div class="cell" contenteditable="true">VIP</div>
+        </div>
+
     </div>
+</div>
 
 </div>
 
 <script>
-/* ===========================
-   1) 갯수 기준 색상 + 역팬 3% 계산
-   =========================== */
+
+/* ----------------------------------
+   1) 갯수 숫자 → 색상 & 역팬 자동 처리
+---------------------------------- */
 function applyRowStyle(row) {
     const amountCell = row.querySelector(".amount-cell");
     const ygpCell    = row.querySelector(".ygp-cell");
@@ -169,38 +150,55 @@ function applyRowStyle(row) {
 
     const num = parseInt(amountCell.innerText.replace(/[^0-9]/g, ""), 10) || 0;
 
-    // 역팬 = 3% (반올림)
     ygpCell.innerText = num > 0 ? Math.round(num * 0.03) : "";
 
     let levelVar = "--lv0";
-    if (num >= 100 && num <= 298)          levelVar = "--lv1";
-    else if (num >= 299 && num <= 999)     levelVar = "--lv2";
-    else if (num >= 1000 && num <= 2999)   levelVar = "--lv3";
-    else if (num >= 3000 && num <= 4999)   levelVar = "--lv4";
-    else if (num >= 5000 && num <= 9999)   levelVar = "--lv5";
-    else if (num >= 10000 && num <= 49999) levelVar = "--lv6";
-    else if (num >= 50000 && num <= 99999) levelVar = "--lv7";
-    else if (num >= 100000 && num <= 299999) levelVar = "--lv8";
-    else if (num >= 300000)                levelVar = "--lv9";
+    if (num >= 100 && num <= 298) levelVar = "--lv1";
+    else if (num <= 999) levelVar = "--lv2";
+    else if (num <= 2999) levelVar = "--lv3";
+    else if (num <= 4999) levelVar = "--lv4";
+    else if (num <= 9999) levelVar = "--lv5";
+    else if (num <= 49999) levelVar = "--lv6";
+    else if (num <= 99999) levelVar = "--lv7";
+    else if (num <= 299999) levelVar = "--lv8";
+    else if (num >= 300000) levelVar = "--lv9";
 
     row.style.background = `var(${levelVar})`;
 }
 
-/* 모든 데이터 행에 스타일 적용 */
-function refreshAllRows() {
-    document.querySelectorAll(".row.data-row").forEach(applyRowStyle);
+function refreshAll() {
+    document.querySelectorAll(".data-row").forEach(applyRowStyle);
 }
 
-/* 입력할 때마다 해당 행만 다시 계산 */
-document.getElementById("table").addEventListener("input", (e) => {
-    const row = e.target.closest(".row.data-row");
-    if (row) applyRowStyle(row);
-});
 
-/* ===========================
-   2) 배경 클릭 시 키보드 닫기
-   =========================== */
-document.addEventListener("click", (e) => {
+/* ----------------------------------
+   2) 열 너비 자동동기화 (핵심)
+---------------------------------- */
+function syncColumnWidths() {
+    const rows = [...document.querySelectorAll(".row")];
+    if (rows.length < 2) return;
+
+    const colsCount = rows[0].children.length;
+    let colWidths = Array(colsCount).fill(0);
+
+    rows.forEach(row => {
+        [...row.children].forEach((cell, i) => {
+            colWidths[i] = Math.max(colWidths[i], cell.scrollWidth);
+        });
+    });
+
+    rows.forEach(row => {
+        [...row.children].forEach((cell, i) => {
+            cell.style.width = colWidths[i] + "px";
+        });
+    });
+}
+
+
+/* ----------------------------------
+   3) 배경 클릭 시 키보드 닫기
+---------------------------------- */
+document.addEventListener("click", (e)=>{
     const isCell = e.target.closest(".cell");
     if (!isCell) {
         const active = document.activeElement;
@@ -210,8 +208,20 @@ document.addEventListener("click", (e) => {
     }
 });
 
-/* 초기 한 번 적용 */
-refreshAllRows();
+
+/* ----------------------------------
+   4) 이벤트 바인딩
+---------------------------------- */
+document.addEventListener("input", ()=>{
+    refreshAll();
+    syncColumnWidths();
+});
+
+window.onload = ()=>{
+    refreshAll();
+    syncColumnWidths();
+};
+
 </script>
 
 </body>
