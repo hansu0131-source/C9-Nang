@@ -1,1 +1,1 @@
-console.log("C9 project ready");
+console.log('menu A ready');
