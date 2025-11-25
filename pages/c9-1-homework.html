@@ -832,13 +832,120 @@ document.addEventListener("click", (e)=>{
 });
 
 window.onload = updateAll;
-
-window.addRow = addRow;
-window.deleteRow = deleteRow;
-window.updateAll = updateAll;
 </script>
 
-<script type="module" src="../assets/js/main.js"></script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+import { getFirestore, collection, getDocs, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDSwLkvSaFVEo8a8-KwURvxzcV_tt1BLnM",
+  authDomain: "c9nang.firebaseapp.com",
+  projectId: "c9nang",
+  storageBucket: "c9nang.firebasestorage.app",
+  messagingSenderId: "837147989788",
+  appId: "1:837147989788:web:03cd5ebd0162bf3a4e8cd9",
+  measurementId: "G-LTS2HVS3KG"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const COLLECTION = "pages_c9_1_homework";
+
+function getRowId(row) {
+  const idCell = row.querySelector(".cell:nth-child(1)");
+  return idCell ? idCell.textContent.trim() : "";
+}
+
+async function loadRows() {
+  try {
+    const snap = await getDocs(collection(db, COLLECTION));
+    const saved = {};
+    snap.forEach(d => saved[d.id] = d.data());
+
+    document.querySelectorAll(".data-row").forEach(row => {
+      const id = getRowId(row);
+      if (!id) return;
+      const data = saved[id];
+      if (!data) return;
+
+      const cells = row.querySelectorAll(".cell");
+      // 0: id, 1: nickname, 2: homework, 3: amount, 4: yeokfan, 5: photo, 6: gif, 7: memo
+      if (data.nickname !== undefined) cells[1].textContent = data.nickname;
+      if (data.homework !== undefined) cells[2].textContent = data.homework;
+
+      if (data.amount !== undefined) {
+        const amount = Number(data.amount) || 0;
+        cells[3].textContent = amount.toLocaleString();
+        const yeok = Math.floor(amount * 0.03);
+        const yeokCell = row.querySelector(".yeok-cell");
+        if (yeokCell) yeokCell.textContent = yeok ? yeok.toLocaleString() : "";
+      }
+
+      if (data.photo !== undefined) cells[5].textContent = data.photo;
+      if (data.gif !== undefined) cells[6].textContent = data.gif;
+      if (data.memo !== undefined) cells[7].textContent = data.memo;
+    });
+
+    if (window.updateAll) window.updateAll();
+  } catch (err) {
+    console.error("Firestore load error:", err);
+  }
+}
+
+function attachAutoSave() {
+  document.querySelectorAll(".data-row").forEach(row => {
+    const editable = row.querySelectorAll('.cell[contenteditable="true"]');
+    editable.forEach(cell => {
+      cell.addEventListener("input", () => {
+        if (row._autosaveTimer) clearTimeout(row._autosaveTimer);
+        row._autosaveTimer = setTimeout(() => saveRow(row), 800);
+      });
+    });
+  });
+}
+
+async function saveRow(row) {
+  const cells = row.querySelectorAll(".cell");
+  const id = (cells[0]?.textContent || "").trim();
+  if (!id) return;
+
+  const nickname = (cells[1]?.textContent || "").trim();
+  const homework = (cells[2]?.textContent || "").trim();
+  const amountRaw = (cells[3]?.textContent || "").replace(/,/g, "").trim();
+  const amount = Number(amountRaw || "0");
+  const yeokfan = Math.floor(amount * 0.03);
+  const yeokCell = row.querySelector(".yeok-cell");
+  if (yeokCell) yeokCell.textContent = yeokfan ? yeokfan.toLocaleString() : "";
+  const photo = (cells[5]?.textContent || "").trim();
+  const gif = (cells[6]?.textContent || "").trim();
+  const memo = (cells[7]?.textContent || "").trim();
+
+  try {
+    await setDoc(doc(collection(db, COLLECTION), id), {
+      id,
+      nickname,
+      homework,
+      amount,
+      yeokfan,
+      photo,
+      gif,
+      memo,
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+    if (window.updateAll) window.updateAll();
+    console.log("Saved homework row:", id);
+  } catch (err) {
+    console.error("Firestore save error:", err);
+  }
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  loadRows().then(attachAutoSave);
+});
+</script>
 
 </body>
 </html>

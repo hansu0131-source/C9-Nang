@@ -813,15 +813,105 @@ document.addEventListener("input", ()=> refreshAll());
 
 window.onload = refreshAll;
 
-
-window.addRow = addRow;
-window.applyRowStyle = applyRowStyle;
-window.deleteRow = deleteRow;
-window.refreshAll = refreshAll;
-window.updateSummary = updateSummary;
 </script>
 
-<script type="module" src="../assets/js/main.js"></script>
-    
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+import { getFirestore, collection, getDocs, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDSwLkvSaFVEo8a8-KwURvxzcV_tt1BLnM",
+  authDomain: "c9nang.firebaseapp.com",
+  projectId: "c9nang",
+  storageBucket: "c9nang.firebasestorage.app",
+  messagingSenderId: "837147989788",
+  appId: "1:837147989788:web:03cd5ebd0162bf3a4e8cd9",
+  measurementId: "G-LTS2HVS3KG"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const COLLECTION = "pages_c9_1";
+
+function getRowId(row) {
+  const idCell = row.querySelector(".cell:nth-child(1)");
+  return idCell ? idCell.textContent.trim() : "";
+}
+
+async function loadRows() {
+  try {
+    const snap = await getDocs(collection(db, COLLECTION));
+    const saved = {};
+    snap.forEach(d => saved[d.id] = d.data());
+
+    document.querySelectorAll(".data-row").forEach(row => {
+      const id = getRowId(row);
+      if (!id) return;
+      const data = saved[id];
+      if (!data) return;
+
+      const cells = row.querySelectorAll(".cell");
+      // 0: id, 1: nickname, 2: amount, 3: level, 4: memo
+      if (data.nickname !== undefined) cells[1].textContent = data.nickname;
+      if (data.amount !== undefined) {
+        const amount = Number(data.amount) || 0;
+        cells[2].textContent = amount.toLocaleString();
+      }
+      if (data.level !== undefined) cells[3].textContent = data.level;
+      if (data.memo !== undefined) cells[4].textContent = data.memo;
+    });
+
+    if (window.updateAll) window.updateAll();
+  } catch (err) {
+    console.error("Firestore load error (c9_1):", err);
+  }
+}
+
+function attachAutoSave() {
+  document.querySelectorAll(".data-row").forEach(row => {
+    const editable = row.querySelectorAll('.cell[contenteditable="true"]');
+    editable.forEach(cell => {
+      cell.addEventListener("input", () => {
+        if (row._autosaveTimer) clearTimeout(row._autosaveTimer);
+        row._autosaveTimer = setTimeout(() => saveRow(row), 800);
+      });
+    });
+  });
+}
+
+async function saveRow(row) {
+  const cells = row.querySelectorAll(".cell");
+  const id = (cells[0]?.textContent || "").trim();
+  if (!id) return;
+
+  const nickname = (cells[1]?.textContent || "").trim();
+  const amountRaw = (cells[2]?.textContent || "").replace(/,/g, "").trim();
+  const amount = Number(amountRaw || "0");
+  const level = (cells[3]?.textContent || "").trim();
+  const memo = (cells[4]?.textContent || "").trim();
+
+  try {
+    await setDoc(doc(collection(db, COLLECTION), id), {
+      id,
+      nickname,
+      amount,
+      level,
+      memo,
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+    if (window.updateAll) window.updateAll();
+    console.log("Saved c9_1 row:", id);
+  } catch (err) {
+    console.error("Firestore save error (c9_1):", err);
+  }
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  loadRows().then(attachAutoSave);
+});
+</script>
+
 </body>
 </html>
