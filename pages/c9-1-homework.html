@@ -107,9 +107,10 @@ h1 {
 .row .cell:nth-child(8) { width: 150px;}  /* 비고 */
 .row .cell:nth-child(9) { width: 80px; }  /* 버튼 */
 
-.action-cell {
+action-cell {
     position: relative;
-}
+    border-right: none;
+
 .action-buttons {
     display: none;
     gap: 4px;
@@ -118,8 +119,19 @@ h1 {
     top: 50%;
     transform: translateY(-50%);
 }
-.row.show-actions .action-buttons {
-    display: flex;
+.action-buttons button {
+    background: #FFD8EA;
+    border: none;
+    border-radius: 999px;
+    padding: 3px 7px;
+    font-size: 11px;
+    cursor: pointer;
+    color: #D24E78;
+    transition: background 0.15s ease, transform 0.15s ease;
+}
+.action-buttons button:hover {
+    background: #ffbddc;
+    transform: translateY(-1px);
 }
 </style>
 </head>
