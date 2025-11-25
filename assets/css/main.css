@@ -16,3 +16,46 @@ header { display:flex; align-items:center; padding:10px; background:#FFE9F4; }
 .dropdown-content { display:none; position:absolute; top:32px; background:white; box-shadow:0 2px 6px rgba(0,0,0,0.1); border-radius:8px; min-width:160px; z-index:10; }
 .dropdown-content a { display:block; padding:8px 12px; color:#D04F7D; }
 .dropdown:hover .dropdown-content { display:block; }
+/* 메인 전체를 세로 가운데 정렬 + 위아래 여백 균형 */
+
+.home-wrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 120px); /* 상단 메뉴 높이 제거하고 화면 꽉 채움 */
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+/* 토끼 이미지 크기 반응형 */
+.home-bunny {
+    width: 45vw;
+    max-width: 280px;
+    min-width: 160px;
+}
+
+/* 낭니 로고 */
+.home-logo {
+    width: 180px;
+    margin: 20px 0 10px;
+}
+
+/* 우낭예 글씨 */
+.home-title {
+    font-family: 'OngleipKonkon', sans-serif;
+    font-size: 36px;
+    color: #ff8fb2;
+    margin-top: 10px;
+}
+
+/* 모바일에서 더 자연스럽게 */
+@media (max-width: 480px) {
+    .home-wrap {
+        min-height: calc(100vh - 80px);
+        padding-top: 30px;
+    }
+    .home-title {
+        font-size: 32px;
+    }
+}
