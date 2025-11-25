@@ -2,131 +2,179 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>C9 낭니 홈</title>
+<title>우 낭 예</title>
 
-<!-- 온글잎 콘콘체 웹폰트 -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/webfontworld/Onul/ONul.css">
+<!-- 온글잎 콘콘체 -->
+<link href="https://webfontworld.github.io/OnDok/OnDok.css" rel="stylesheet">
+
+<link rel="stylesheet" href="assets/css/main.css">
+<script defer src="assets/js/main.js"></script>
 
 <style>
 body {
-    background: #FFF6FA;
-    font-family: 'ONul', "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     margin: 0;
-    padding: 20px 16px;
+    padding: 0;
+    font-family: "OnDok", sans-serif;
+    background: #FFF6FA;
+    color: #4c2d3b;
+}
+
+/* HEADER 유지 (탭 구조 유지) */
+header {
+    width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 18px;
+    box-sizing: border-box;
 }
 
-.wrap {
-    width: 100%;
-    max-width: 1080px;
+.logo-small {
+    height: 48px;
 }
 
-/* 로고 중앙 정렬 영역 */
-.main-logo-box {
-    width: 100%;
-    text-align: center;
-    margin-bottom: 24px;
+.menu {
+    display: flex;
+    align-items: center;
+    gap: 14px;
 }
-
-.main-logo-box img {
-    width: min(300px, 70vw);   /* 모바일 크게 / 웹 적당하게 */
-    max-width: 340px;
-    border-radius: 18px;
-    background: white;
-    padding: 10px;
-    box-shadow: 0 4px 12px rgba(255,150,180,0.25);
-}
-
-.tagline {
-    margin-top: 10px;
-    font-size: 26px;
-    font-weight: 700;
-    color: #FF8FB2;
-    text-align: center;
-    letter-spacing: 0.1em;
-}
-
-/* 기존 탭/메뉴 스타일은 그대로 유지 */
-.menu-section {
-    margin-top: 26px;
-}
-
-.menu-title {
-    font-size: 17px;
-    font-weight: 700;
-    color: #d45784;
-    margin-bottom: 10px;
-}
-
-.menu-card {
-    background: #FFEFF7;
-    padding: 14px 18px;
-    border-radius: 22px;
-    margin-bottom: 14px;
-    box-shadow: 0 2px 6px rgba(255,150,180,0.16);
-}
-
-.menu-card-title {
-    font-size: 14px;
-    font-weight: 700;
-    color: #c23b6f;
-    margin-bottom: 8px;
-}
-
-.menu-link {
-    display: block;
-    padding: 9px 12px;
-    border-radius: 999px;
-    background: #FFD8EA;
-    color: #c23b6f;
+.menu a {
     text-decoration: none;
-    text-align: center;
-    margin-bottom: 6px;
-    font-size: 13px;
-    font-weight: 600;
-    box-shadow: 0 1px 3px rgba(255, 130, 160, 0.35);
+    color: #D04F7D;
+    font-weight: 700;
 }
 
+/* Dropdown */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+.dropbtn {
+    background: none;
+    border: none;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    color: #D04F7D;
+}
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background: #FFF1F5;
+    min-width: 140px;
+    border-radius: 12px;
+    padding: 6px 0;
+    box-shadow: 0 2px 8px rgba(255,150,180,0.25);
+}
+.dropdown-content a {
+    display: block;
+    padding: 8px 14px;
+    text-decoration: none;
+    color: #D04F7D;
+    font-size: 14px;
+}
+.dropdown-content a:hover {
+    background: #FFD6E9;
+}
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* ---------- MAIN CONTENT 중앙정렬 ---------- */
+.content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 40px 16px;
+}
+
+/* 토끼이미지 + 로고이미지 */
+.main-top-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+/* 토끼 이미지 */
+.rabbit-img {
+    width: 200px;
+    max-width: 60vw;
+}
+
+/* 메인 로고 */
+.main-logo {
+    width: 220px;
+    max-width: 65vw;
+}
+
+/* 메인 문구 */
+h1 {
+    margin-top: 22px;
+    font-size: 46px;
+    color: #FF8FB2;
+    font-weight: 800;
+}
+
+/* 모바일 대응 */
+@media(max-width:600px) {
+    .rabbit-img {
+        width: 140px;
+    }
+    .main-logo {
+        width: 160px;
+    }
+    h1 {
+        font-size: 36px;
+    }
+}
 </style>
+
 </head>
-
 <body>
-<div class="wrap">
 
-    <!-- ⭐ 상단 메인 이미지 + 우낭예 -->
-    <div class="main-logo-box">
-        <img src="assets/img/main_logo.png" alt="메인 로고">
-        <div class="tagline">우 낭 예</div>
+<header>
+    <!-- 기존 구조 유지 -->
+    <img src="assets/img/c9-logo.png" class="logo-small">
+
+    <nav class="menu">
+        <a href="index.html">홈</a>
+
+        <div class="dropdown">
+            <button class="dropbtn">엑셀방송 ▼</button>
+            <div class="dropdown-content">
+                <a href="pages/c9-1.html">낭플단 1회</a>
+                <a href="pages/c9-1-homework.html">낭플단 1회 숙제</a>
+                <a href="pages/c9-2.html">낭플단 2회</a>
+                <a href="pages/c9-2-homework.html">낭플단 2회 숙제</a>
+            </div>
+        </div>
+
+        <div class="dropdown">
+            <button class="dropbtn">개인방송 ▼</button>
+            <div class="dropdown-content">
+                <a href="pages/pb-homework.html">숙제</a>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<!-- ---------- MAIN 중앙정렬 본문 ---------- -->
+<div class="content">
+
+    <div class="main-top-logo">
+        <!-- ① 토끼 이미지 -->
+        <img src="assets/img/rabbit.png" class="rabbit-img">
+
+        <!-- ② 로고 이미지 -->
+        <img src="assets/img/c9-logo.png" class="main-logo">
     </div>
 
-    <!-- ⭐ 기존 메뉴 구조는 절대 변경 없음 -->
-    <div class="menu-section">
-
-        <div class="menu-title">엑셀방송</div>
-
-        <div class="menu-card">
-            <div class="menu-card-title">C9 1회차</div>
-            <a class="menu-link" href="c9-1.html">📋 1회차 낭플단 명단</a>
-            <a class="menu-link" href="c9-1-homework.html">📝 1회차 숙제</a>
-        </div>
-
-        <div class="menu-card">
-            <div class="menu-card-title">C9 2회차 (예정)</div>
-            <a class="menu-link" href="#">📋 준비 중</a>
-            <a class="menu-link" href="#">📝 준비 중</a>
-        </div>
-
-        <div class="menu-title">개인방송</div>
-
-        <div class="menu-card">
-            <div class="menu-card-title">개인 숙제 관리</div>
-            <a class="menu-link" href="#">📝 준비 중</a>
-        </div>
-
-    </div>
-
+    <!-- ③ 우낭예 문구 -->
+    <h1>우 낭 예</h1>
 </div>
+
 </body>
 </html>
