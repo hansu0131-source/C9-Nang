@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐰 C9 2회차 숙제 체크 (12/06)</title>
+
+<style>
+body {
+    background: #F4FAFF;
+    font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 20px 16px;
+    margin: 0;
+    color: #2a4365;
+}
+.wrap {
+    width: 100%;
+    max-width: 1080px;
+    margin: 0 auto;
+}
+h1 {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    color: #4F7DFF;
+}
+.sub-title {
+    text-align: center;
+    font-size: 13px;
+    margin-bottom: 16px;
+    color: #6F89C7;
+}
+
+/* 네비 */
+.nav-bar {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+.nav-bar a {
+    font-size: 12px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid #C6D9FF;
+    background: #fff;
+    text-decoration: none;
+    color: #3F5FB8;
+}
+.nav-bar a:hover { background: #E8F0FF; }
+
+/* 테이블 */
+.table-scroll {
+    overflow-x: auto;
+    padding-bottom: 4px;
+}
+.table {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 1080px;
+}
+.row {
+    display: flex;
+    background: white;
+    border-radius: 24px;
+    overflow: hidden;
+    padding: 2px 0;
+    box-shadow: 0 1px 4px rgba(120,152,225,0.08);
+}
+.cell {
+    padding: 4px 8px;
+    font-size: 14px;
+    flex-shrink: 0;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid #DCE8FF;
+}
+.cell:last-child { border-right: none; }
+
+.header {
+    background: #E8F0FF;
+}
+.header .cell {
+    font-weight: 700;
+    color: #3B63C7;
+    border-bottom: 2px solid #C2D6FF;
+}
+
+/* 열 넓이 */
+.row .cell:nth-child(1) { width: 130px; }
+.row .cell:nth-child(2) { width: 130px; }
+.row .cell:nth-child(3) { width: 120px; } /* 숙제 종류 */
+.row .cell:nth-child(4) { width: 90px; }  /* 낭플 */
+.row .cell:nth-child(5) { width: 90px; }  /* 역팬 3% */
+.row .cell:nth-child(6) { width: 90px; }  /* 원플원 */
+.row .cell:nth-child(7) { width: 70px; }  /* 사진 */
+.row .cell:nth-child(8) { width: 70px; }  /* 움짤 */
+.row .cell:nth-child(9) { width: 150px;}  /* 비고 */
+.row .cell:nth-child(10){ width: 80px; }  /* 버튼 구역 */
+
+.action-cell { position: relative; }
+.action-buttons {
+    display: none;
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    gap: 4px;
+}
+.action-buttons button {
+    background: #D7E6FF;
+    border: none;
+    border-radius: 999px;
+    padding: 3px 7px;
+    font-size: 11px;
+    cursor: pointer;
+    color: #2F56B8;
+}
+.row.show-actions .action-buttons { display: flex; }
+
+.summary-row {
+    background: #F4FAFF;
+    font-weight: 700;
+    color: #34518A;
+}
+
+/* 색상 단계(금액 별) */
+:root {
+    --lv0:#ffffff;
+    --lv1:#F7FBFF;
+    --lv2:#EDF5FF;
+    --lv3:#E1EFFF;
+    --lv4:#D4E7FF;
+    --lv5:#C6DDFF;
+    --lv6:#B8D2FF;
+    --lv7:#A8C6FF;
+    --lv8:#9AB9FF;
+    --lv9:#8AACFF;
+}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+
+<h1>🐰 C9 2회차 숙제 체크 (12/06)</h1>
+<p class="sub-title">정성방셀 4/4 · 방셀 2/1 · 고정사진방셀 1+/0</p>
+
+<div class="nav-bar">
+    <a href="../index.html">← 홈</a>
+    <a href="c9-2.html">← C9 2회차 낭플단</a>
+</div>
+
+<div class="table-scroll">
+<div class="table" id="table">
+
+<!-- 헤더 -->
+<div class="row header">
+    <div class="cell">아이디</div>
+    <div class="cell">닉네임</div>
+    <div class="cell">숙제 종류</div>
+    <div class="cell">낭플</div>
+    <div class="cell">역팬(3%)</div>
+    <div class="cell">원플원</div>
+    <div class="cell">사진</div>
+    <div class="cell">움짤</div>
+    <div class="cell">비고</div>
+    <div class="cell"></div>
+</div>
+
+<!-- ========================= -->
+<!--   📌 예시 데이터 3명만 넣음 -->
+<!--   전체 37명 전부 넣어줄까? 요청하면 즉시 생성함
+<!-- ========================= -->
+
+<div class="row data-row" data-amount="97620">
+    <div class="cell">rego779</div>
+    <div class="cell">lIllIlIIlIIl</div>
+    <div class="cell">정성방셀</div>
+    <div class="cell amount-cell">97620</div>
+    <div class="cell yeok-cell"></div>
+    <div class="cell one-cell">50306</div>
+    <div class="cell">4</div>
+    <div class="cell">4</div>
+    <div class="cell"></div>
+    <div class="cell action-cell"><div class="action-buttons">
+        <button class="add">+</button><button class="del">🗑</button>
+    </div></div>
+</div>
+
+<div class="row data-row" data-amount="23388">
+    <div class="cell">wjddudtjr777</div>
+    <div class="cell">낭무새</div>
+    <div class="cell">정성방셀</div>
+    <div class="cell amount-cell">23388</div>
+    <div class="cell yeok-cell"></div>
+    <div class="cell one-cell"></div>
+    <div class="cell">4</div>
+    <div class="cell">4</div>
+    <div class="cell"></div>
+    <div class="cell action-cell"><div class="action-buttons">
+        <button class="add">+</button><button class="del">🗑</button>
+    </div></div>
+</div>
+
+<div class="row data-row" data-amount="22472">
+    <div class="cell">poksavi2</div>
+    <div class="cell">시래</div>
+    <div class="cell">정성방셀</div>
+    <div class="cell amount-cell">22472</div>
+    <div class="cell yeok-cell"></div>
+    <div class="cell one-cell"></div>
+    <div class="cell">4</div>
+    <div class="cell">4</div>
+    <div class="cell"></div>
+    <div class="cell action-cell"><div class="action-buttons">
+        <button class="add">+</button><button class="del">🗑</button>
+    </div></div>
+</div>
+
+<!-- ========================= -->
+<!-- 📌 합계 행 -->
+<!-- ========================= -->
+
+<div class="row summary-row">
+    <div class="cell">합계</div>
+    <div class="cell summary-count"></div>
+    <div class="cell"></div>
+    <div class="cell summary-nangpul"></div>
+    <div class="cell summary-yeok"></div>
+    <div class="cell summary-one"></div>
+    <div class="cell summary-photo"></div>
+    <div class="cell summary-gif"></div>
+    <div class="cell"></div>
+    <div class="cell"></div>
+</div>
+
+</div>
+</div>
+
+<script>
+function num(t){ return parseInt(String(t).replace(/[^0-9]/g,"")) || 0; }
+
+/* 색상 지정 */
+function styleRow(r){
+    const n=num(r.querySelector(".amount-cell")?.innerText);
+    let lv="--lv0";
+    if(n>=100 && n<=299) lv="--lv1";
+    else if(n<=999) lv="--lv2";
+    else if(n<=2999) lv="--lv3";
+    else if(n<=4999) lv="--lv4";
+    else if(n<=9999) lv="--lv5";
+    else if(n<=49999) lv="--lv6";
+    else if(n<=99999) lv="--lv7";
+    else if(n>=100000) lv="--lv8";
+    r.style.background=`var(${lv})`;
+}
+
+/* 전체 계산 */
+function updateAll(){
+    let sumN=0, sumY=0, sumO=0, sumP=0, sumG=0, cnt=0;
+
+    document.querySelectorAll(".data-row").forEach(r=>{
+        cnt++;
+        const n=num(r.querySelector(".amount-cell")?.innerText);
+        const one=num(r.querySelector(".one-cell")?.innerText);
+        const p=num(r.children[6]?.innerText);
+        const g=num(r.children[7]?.innerText);
+
+        // 역팬 3%
+        const y=Math.floor(n*0.03);
+        r.querySelector(".yeok-cell").innerText = y?y.toLocaleString():"";
+
+        sumN+=n;
+        sumY+=y;
+        sumO+=one;
+        sumP+=p;
+        sumG+=g;
+
+        styleRow(r);
+    });
+
+    const s=document.querySelector(".summary-row");
+    s.querySelector(".summary-count").innerText=cnt+"명";
+    s.querySelector(".summary-nangpul").innerText=sumN.toLocaleString();
+    s.querySelector(".summary-yeok").innerText=sumY.toLocaleString();
+    s.querySelector(".summary-one").innerText=sumO.toLocaleString();
+    s.querySelector(".summary-photo").innerText=sumP.toLocaleString();
+    s.querySelector(".summary-gif").innerText=sumG.toLocaleString();
+}
+
+/* 정렬 */
+function sortRows(){
+    const table=document.getElementById("table");
+    const summary=document.querySelector(".summary-row");
+    const rows=[...document.querySelectorAll(".data-row")];
+
+    rows.sort((a,b)=> num(b.querySelector(".amount-cell").innerText)-num(a.querySelector(".amount-cell").innerText));
+    rows.forEach(r=>table.insertBefore(r,summary));
+}
+
+/* 버튼 처리 */
+document.addEventListener("click",e=>{
+    const row=e.target.closest(".data-row");
+    document.querySelectorAll(".data-row").forEach(r=>r.classList.remove("show-actions"));
+    if(row) row.classList.add("show-actions");
+
+    if(e.target.classList.contains("add")){
+        const newR=row.cloneNode(true);
+        newR.querySelectorAll(".cell").forEach(c=>{
+            if(c.classList.contains("action-cell")) return;
+            c.innerText="";
+        });
+        row.insertAdjacentElement("afterend",newR);
+        updateAll();
+    }
+
+    if(e.target.classList.contains("del")){
+        if(document.querySelectorAll(".data-row").length<=1) return alert("마지막 행은 삭제 불가");
+        row.remove();
+        updateAll();
+    }
+});
+
+document.addEventListener("input",()=>{ sortRows(); updateAll(); });
+
+window.onload=()=>{ sortRows(); updateAll(); };
+</script>
+
+</body>
+</html>
