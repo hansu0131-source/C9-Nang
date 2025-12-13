@@ -1,199 +1,150 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>🐰 C9-3 낭플단</title>
 
 <style>
-body {
-    background: #FFFCEB;
-    font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-    display: flex;
-    justify-content: center;
-    padding: 20px 16px;
-    margin: 0;
-    color: #5a4a2c;
+body{
+    background:#fff8ec;
+    font-family:Pretendard, system-ui, sans-serif;
+    padding:20px;
 }
-.wrap {
-    width: 100%;
-    max-width: 960px;
+table{
+    width:100%;
+    max-width:1100px;
+    margin:0 auto;
+    border-collapse:collapse;
+    background:#fff;
 }
-h1 {
-    text-align: center;
-    font-size: 22px;
-    font-weight: 800;
-    margin-bottom: 14px;
-    color: #E6B800;
+th{
+    background:#ffb300;
+    color:#000;
+    padding:10px;
+    font-weight:800;
+    font-size:14px;
 }
-.nav-bar {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-bottom: 14px;
+td{
+    border:1px solid #ddd;
+    padding:8px;
+    font-size:14px;
+    text-align:center;
 }
-.nav-bar a {
-    font-size: 12px;
-    padding: 6px 12px;
-    border-radius: 999px;
-    border: 1px solid #ffe08a;
-    background: #fff7cc;
-    text-decoration: none;
-    color: #9c7a00;
+tbody tr:nth-child(even){
+    background:#fff4d6;
 }
-.nav-bar a:hover {
-    background: #fff1a8;
+.sum{
+    background:#ffd59a;
+    font-weight:800;
 }
-
-.table {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-.row {
-    display: flex;
-    background: #ffffff;
-    border-radius: 18px;
-    overflow: hidden;
-    box-shadow: 0 2px 6px rgba(230,180,0,0.12);
-}
-.cell {
-    padding: 8px 10px;
-    font-size: 14px;
-    text-align: center;
-    border-right: 1px solid #fff0b3;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.cell:last-child { border-right: none; }
-
-.header {
-    background: #FFF4BF;
-    font-weight: 700;
-    color: #8a6a00;
-}
-
-/* 열 너비 */
-.row .cell:nth-child(1) { width: 140px; } /* 아이디 */
-.row .cell:nth-child(2) { width: 160px; } /* 닉네임 */
-.row .cell:nth-child(3) { width: 120px; } /* 낭플 */
-.row .cell:nth-child(4) { width: 120px; } /* 원플원 */
-.row .cell:nth-child(5) { width: 200px; } /* 비고 */
-
+.left{ text-align:left; }
 </style>
 </head>
 
 <body>
-<div class="wrap">
 
-<h1>🐰 C9-3 낭플단</h1>
+<table>
+<thead>
+<tr>
+    <th>아이디</th>
+    <th>닉네임</th>
+    <th>낭플</th>
+    <th>원플원</th>
+    <th>공약</th>
+    <th>비고</th>
+</tr>
+</thead>
 
-<div class="nav-bar">
-    <a href="../index.html">← 홈</a>
-    <a href="c9-3-homework.html">숙제 체크</a>
-    <a href="c9-3-noise.html">소음단</a>
-</div>
+<tbody>
+<tr>
+<td>fox11241</td><td>#woorinangni</td><td>190874</td><td>175765</td>
+<td class="left">정성방셀 + 역팬 3% or 배민 50만원 + 방송소원권 + 식데</td><td></td>
+</tr>
 
-<div class="table">
+<tr>
+<td>dksl2233</td><td>[C9]잘해</td><td>147890</td><td></td>
+<td class="left">정성방셀 + 역팬 3% or 배민 50만원 + 방송소원권 + 식데</td><td></td>
+</tr>
 
-<div class="row header">
-    <div class="cell">아이디</div>
-    <div class="cell">닉네임</div>
-    <div class="cell">낭플</div>
-    <div class="cell">원플원</div>
-    <div class="cell">비고</div>
-</div>
+<tr>
+<td>jounguk892</td><td>꽂을때희열</td><td>13883</td><td></td>
+<td class="left">카톡 + 역팬 3% + 정성방셀 or 원하는 직원과 방셀(대표님 포함)</td><td></td>
+</tr>
 
-<div class="row">
-    <div class="cell">fox11241</div>
-    <div class="cell">#woorinangni</div>
-    <div class="cell">190,874</div>
-    <div class="cell">175,765</div>
-    <div class="cell">&lt;원플원&gt;</div>
-</div>
+<tr>
+<td>tjd01084</td><td>낭겨울♥</td><td>10782</td><td></td>
+<td class="left">카톡 + 역팬 3% + 정성방셀 or 원하는 직원과 방셀(대표님 포함)</td><td></td>
+</tr>
 
-<div class="row">
-    <div class="cell">dksl2233</div>
-    <div class="cell">[C9]잘해</div>
-    <div class="cell">147,890</div>
-    <div class="cell"></div>
-    <div class="cell"></div>
-</div>
+<tr>
+<td>gjckdtlr1744</td><td>얼빵얼빵얼빵</td><td>10300</td><td></td>
+<td class="left">카톡 + 역팬 3% + 정성방셀 or 원하는 직원과 방셀(대표님 포함)</td><td></td>
+</tr>
 
-<div class="row">
-    <div class="cell">jounguk892</div>
-    <div class="cell">꽂을때희열</div>
-    <div class="cell">13,883</div>
-    <div class="cell"></div>
-    <div class="cell"></div>
-</div>
+<tr>
+<td>noble275</td><td>꼬라지하고는</td><td>10069</td><td></td>
+<td class="left">카톡 + 역팬 3% + 정성방셀 or 원하는 직원과 방셀(대표님 포함)</td><td></td>
+</tr>
 
-<div class="row">
-    <div class="cell">tjd01084</div>
-    <div class="cell">낭겨울♥</div>
-    <div class="cell">10,782</div>
-    <div class="cell"></div>
-    <div class="cell"></div>
-</div>
+<tr>
+<td>lommy0124</td><td>Grok29</td><td>10000</td><td></td>
+<td class="left">카톡 + 역팬 3% + 정성방셀 or 원하는 직원과 방셀(대표님 포함)</td><td></td>
+</tr>
 
-<div class="row">
-    <div class="cell">gjckdtlr1744</div>
-    <div class="cell">얼빵얼빵얼빵</div>
-    <div class="cell">10,300</div>
-    <div class="cell"></div>
-    <div class="cell"></div>
-</div>
+<tr>
+<td>kokoko2151</td><td>로넌</td><td>5734</td><td></td>
+<td class="left">역팬 3% + 방셀 (사진 2장, 움짤 1장)</td><td></td>
+</tr>
 
-<div class="row">
-    <div class="cell">noble275</div>
-    <div class="cell">꼬라지하고는</div>
-    <div class="cell">10,069</div>
-    <div class="cell"></div>
-    <div class="cell"></div>
-</div>
+<tr>
+<td>tmddn6630</td><td>VALeNTiNo_</td><td>3064</td><td></td>
+<td class="left">역팬 3% + 방셀 (사진 2장)</td><td></td>
+</tr>
 
-<div class="row">
-    <div class="cell">lommy0124</div>
-    <div class="cell">Grok29</div>
-    <div class="cell">10,000</div>
-    <div class="cell"></div>
-    <div class="cell"></div>
-</div>
+<tr>
+<td>tomorrow1111</td><td>조블노엘</td><td>1678</td><td></td>
+<td class="left">역팬 3% + 고정 사진 방셀</td><td></td>
+</tr>
 
-<div class="row">
-    <div class="cell">kokoko2151</div>
-    <div class="cell">로넌</div>
-    <div class="cell">5,734</div>
-    <div class="cell"></div>
-    <div class="cell"></div>
-</div>
+<tr>
+<td>malguman</td><td>도맑음</td><td>1225</td><td></td>
+<td class="left">역팬 3% + 고정 사진 방셀</td><td></td>
+</tr>
 
-<div class="row">
-    <div class="cell">tmddn6630</div>
-    <div class="cell">VALeNTiNo_</div>
-    <div class="cell">3,064</div>
-    <div class="cell"></div>
-    <div class="cell"></div>
-</div>
+<!-- ===== 소음단 ===== -->
 
-<div class="row">
-    <div class="cell">tomorrow1111</div>
-    <div class="cell">조블노엘</div>
-    <div class="cell">1,678</div>
-    <div class="cell"></div>
-    <div class="cell"></div>
-</div>
+<tr><td>dumbo0131</td><td>당군+</td><td>400</td><td></td><td class="left">소음단</td><td></td></tr>
+<tr><td>sdroxbnq63</td><td>[C9]참치마요</td><td>309</td><td></td><td class="left">소음단</td><td></td></tr>
+<tr><td>wjddudtjr777</td><td>낭무새</td><td>300</td><td></td><td class="left">소음단</td><td></td></tr>
+<tr><td>q6672</td><td>철줌마효진님</td><td>299</td><td></td><td class="left">소음단</td><td></td></tr>
+<tr><td>zlzldydtk</td><td>지유의오른팔</td><td>299</td><td></td><td class="left">소음단</td><td></td></tr>
+<tr><td>stealth120</td><td>뜨거은비빔면</td><td>299</td><td></td><td class="left">소음단</td><td></td></tr>
+<tr><td>secrets21</td><td>딴딴한고로케</td><td>226</td><td></td><td class="left">소음단</td><td></td></tr>
+<tr><td>k203gon</td><td>창Bong</td><td>218</td><td></td><td class="left">소음단</td><td></td></tr>
+<tr><td>mfc0326</td><td>빵빡이2↑</td><td>200</td><td></td><td class="left">소음단</td><td></td></tr>
+<tr><td>nhamgaja95</td><td>빵빡이22호</td><td>109</td><td></td><td class="left">소음단</td><td></td></tr>
+<tr><td>suhjt72</td><td>[C9]존잘구</td><td>109</td><td></td><td class="left">소음단</td><td></td></tr>
+<tr><td>pcw990324</td><td>[C9]망순그랑</td><td>109</td><td></td><td class="left">소음단</td><td></td></tr>
+<tr><td>qwe3186</td><td>[C9]☆TOP</td><td>109</td><td></td><td class="left">소음단</td><td></td></tr>
 
-<div class="row">
-    <div class="cell">malguman</div>
-    <div class="cell">도맑음</div>
-    <div class="cell">1,225</div>
-    <div class="cell"></div>
-    <div class="cell"></div>
-</div>
+<tr><td>imarrymei</td><td>풍쏘고말해요</td><td>100</td><td></td><td class="left">소음단</td><td></td></tr>
+<tr><td>krhtlgh123</td><td>족구369</td><td>100</td><td></td><td class="left">소음단</td><td></td></tr>
+<tr><td>kcgt6123</td><td>이슈킹</td><td>100</td><td></td><td class="left">소음단</td><td></td></tr>
+<tr><td>kimsumgk77</td><td>무상도</td><td>100</td><td></td><td class="left">소음단</td><td></td></tr>
+<tr><td>ksh5154</td><td>검은눈토끼</td><td>100</td><td></td><td class="left">소음단</td><td></td></tr>
+<tr><td>vdfntqa85</td><td>##38광땡</td><td>100</td><td></td><td class="left">소음단</td><td></td></tr>
+<tr><td>sh8888</td><td>[C9]철통령</td><td>100</td><td></td><td class="left">소음단</td><td></td></tr>
+<tr><td>times10</td><td>[C9]랑에</td><td>100</td><td></td><td class="left">소음단</td><td></td></tr>
+<tr><td>abss1003</td><td>[밍]먹족</td><td>100</td><td></td><td class="left">소음단</td><td></td></tr>
 
-</div>
-</div>
+<tr class="sum">
+<td>합계</td><td>33명</td><td>409385</td><td>175765</td>
+<td>585150</td><td></td>
+</tr>
+
+</tbody>
+</table>
+
 </body>
 </html>
