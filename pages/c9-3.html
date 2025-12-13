@@ -1,150 +1,220 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>🐰 C9-3 낭플단</title>
 
 <style>
 body{
-    background:#fff8ec;
-    font-family:Pretendard, system-ui, sans-serif;
-    padding:20px;
+    background:#FFF7E8;
+    font-family:"Pretendard",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+    margin:0; padding:20px;
+    display:flex; justify-content:center;
+    color:#2b2b2b;
 }
-table{
-    width:100%;
-    max-width:1100px;
-    margin:0 auto;
-    border-collapse:collapse;
-    background:#fff;
-}
-th{
-    background:#ffb300;
-    color:#000;
-    padding:10px;
-    font-weight:800;
-    font-size:14px;
-}
-td{
-    border:1px solid #ddd;
-    padding:8px;
-    font-size:14px;
+.wrap{width:100%;max-width:1100px;}
+
+h1{
     text-align:center;
-}
-tbody tr:nth-child(even){
-    background:#fff4d6;
-}
-.sum{
-    background:#ffd59a;
+    font-size:22px;
+    margin-bottom:14px;
+    color:#FF9800;
     font-weight:800;
 }
-.left{ text-align:left; }
+
+.nav{
+    display:flex; gap:8px; margin-bottom:12px;
+}
+.nav button{
+    background:#FFE0B2;
+    border:none;
+    border-radius:999px;
+    padding:6px 14px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.search{
+    display:flex;
+    justify-content:center;
+    margin-bottom:12px;
+}
+.search input{
+    width:260px;
+    padding:6px 12px;
+    border-radius:999px;
+    border:1px solid #FFD699;
+}
+
+.table{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    min-width:860px;
+}
+.row{
+    display:flex;
+    background:#FFF;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 1px 4px rgba(0,0,0,.08);
+}
+.header{
+    background:#FFE0B2;
+    font-weight:700;
+}
+.cell{
+    padding:6px 8px;
+    font-size:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    border-right:1px solid #FFE7C2;
+}
+.cell:last-child{border-right:none}
+
+.row .cell:nth-child(1){width:130px}
+.row .cell:nth-child(2){width:140px}
+.row .cell:nth-child(3){width:100px}
+.row .cell:nth-child(4){width:560px}
+.row .cell:nth-child(5){width:80px}
+
+.data-row:hover{transform:translateY(-1px)}
+
+.summary{
+    background:#FFF3E0;
+    font-weight:800;
+}
+
+/* 색상 단계 */
+:root{
+    --lv1:#FFF7ED;
+    --lv2:#FFF3E0;
+    --lv3:#FFE0B2;
+    --lv4:#FFCC80;
+    --lv5:#FFB74D;
+    --lv6:#FFA726;
+}
 </style>
 </head>
 
 <body>
+<div class="wrap">
 
-<table>
-<thead>
-<tr>
-    <th>아이디</th>
-    <th>닉네임</th>
-    <th>낭플</th>
-    <th>원플원</th>
-    <th>공약</th>
-    <th>비고</th>
-</tr>
-</thead>
+<div class="nav">
+    <button onclick="location.href='../index.html'">🏠 홈</button>
+    <button onclick="history.back()">◀ 이전</button>
+</div>
 
-<tbody>
-<tr>
-<td>fox11241</td><td>#woorinangni</td><td>190874</td><td>175765</td>
-<td class="left">정성방셀 + 역팬 3% or 배민 50만원 + 방송소원권 + 식데</td><td></td>
-</tr>
+<h1>🐰 C9-3 낭플단</h1>
 
-<tr>
-<td>dksl2233</td><td>[C9]잘해</td><td>147890</td><td></td>
-<td class="left">정성방셀 + 역팬 3% or 배민 50만원 + 방송소원권 + 식데</td><td></td>
-</tr>
+<div class="search">
+    <input id="search" placeholder="아이디 / 닉네임 검색">
+</div>
 
-<tr>
-<td>jounguk892</td><td>꽂을때희열</td><td>13883</td><td></td>
-<td class="left">카톡 + 역팬 3% + 정성방셀 or 원하는 직원과 방셀(대표님 포함)</td><td></td>
-</tr>
+<div class="table" id="table">
 
-<tr>
-<td>tjd01084</td><td>낭겨울♥</td><td>10782</td><td></td>
-<td class="left">카톡 + 역팬 3% + 정성방셀 or 원하는 직원과 방셀(대표님 포함)</td><td></td>
-</tr>
+<div class="row header">
+    <div class="cell">아이디</div>
+    <div class="cell">닉네임</div>
+    <div class="cell">낭플</div>
+    <div class="cell">공약</div>
+    <div class="cell"></div>
+</div>
 
-<tr>
-<td>gjckdtlr1744</td><td>얼빵얼빵얼빵</td><td>10300</td><td></td>
-<td class="left">카톡 + 역팬 3% + 정성방셀 or 원하는 직원과 방셀(대표님 포함)</td><td></td>
-</tr>
+<!-- 데이터 행 -->
+<div class="row data-row">
+    <div class="cell" contenteditable>fox11241</div>
+    <div class="cell" contenteditable>#woorinangni</div>
+    <div class="cell amount" contenteditable>190874</div>
+    <div class="cell pledge"></div>
+    <div class="cell"></div>
+</div>
 
-<tr>
-<td>noble275</td><td>꼬라지하고는</td><td>10069</td><td></td>
-<td class="left">카톡 + 역팬 3% + 정성방셀 or 원하는 직원과 방셀(대표님 포함)</td><td></td>
-</tr>
+<div class="row data-row">
+    <div class="cell" contenteditable>dksl2233</div>
+    <div class="cell" contenteditable>[C9]잘해</div>
+    <div class="cell amount" contenteditable>147890</div>
+    <div class="cell pledge"></div>
+    <div class="cell"></div>
+</div>
 
-<tr>
-<td>lommy0124</td><td>Grok29</td><td>10000</td><td></td>
-<td class="left">카톡 + 역팬 3% + 정성방셀 or 원하는 직원과 방셀(대표님 포함)</td><td></td>
-</tr>
+<div class="row data-row">
+    <div class="cell" contenteditable>jounguk892</div>
+    <div class="cell" contenteditable>꽃을때희열</div>
+    <div class="cell amount" contenteditable>13883</div>
+    <div class="cell pledge"></div>
+    <div class="cell"></div>
+</div>
 
-<tr>
-<td>kokoko2151</td><td>로넌</td><td>5734</td><td></td>
-<td class="left">역팬 3% + 방셀 (사진 2장, 움짤 1장)</td><td></td>
-</tr>
+<div class="row data-row">
+    <div class="cell" contenteditable>tomorrow1111</div>
+    <div class="cell" contenteditable>조블노엘</div>
+    <div class="cell amount" contenteditable>1678</div>
+    <div class="cell pledge"></div>
+    <div class="cell"></div>
+</div>
 
-<tr>
-<td>tmddn6630</td><td>VALeNTiNo_</td><td>3064</td><td></td>
-<td class="left">역팬 3% + 방셀 (사진 2장)</td><td></td>
-</tr>
+<!-- 합계 -->
+<div class="row summary">
+    <div class="cell">합계</div>
+    <div class="cell" id="cnt"></div>
+    <div class="cell" id="sum"></div>
+    <div class="cell"></div>
+    <div class="cell"></div>
+</div>
 
-<tr>
-<td>tomorrow1111</td><td>조블노엘</td><td>1678</td><td></td>
-<td class="left">역팬 3% + 고정 사진 방셀</td><td></td>
-</tr>
+</div>
+</div>
 
-<tr>
-<td>malguman</td><td>도맑음</td><td>1225</td><td></td>
-<td class="left">역팬 3% + 고정 사진 방셀</td><td></td>
-</tr>
+<script>
+function num(v){return parseInt(String(v).replace(/[^0-9]/g,''))||0}
 
-<!-- ===== 소음단 ===== -->
+function pledgeByAmount(n){
+    if(n<=999) return "소음단";
+    if(n<=2999) return "역팬 3% + 고정 사진 방셀";
+    if(n<=4999) return "역팬3% + 방셀 (사진 2장)";
+    if(n<=9999) return "역팬3% + 방셀 (사진 2장, 움짤 1장)";
+    if(n<=49999) return "카톡 + 역팬 3% + 정성방셀 or 원하는 직원과 방셀(대표님 포함)";
+    if(n<=100000) return "카톡 + 역팬 3% + 정성방셀 + 소소한선물";
+    if(n<=299999) return "정성방셀 + 역팬 3% or 배민 50만원 + 방송소원권 + 식데";
+    return "정성방셀 + 역팬 3% or 배민 100만원 + 식데 + 술데 + 백화점 데이트";
+}
 
-<tr><td>dumbo0131</td><td>당군+</td><td>400</td><td></td><td class="left">소음단</td><td></td></tr>
-<tr><td>sdroxbnq63</td><td>[C9]참치마요</td><td>309</td><td></td><td class="left">소음단</td><td></td></tr>
-<tr><td>wjddudtjr777</td><td>낭무새</td><td>300</td><td></td><td class="left">소음단</td><td></td></tr>
-<tr><td>q6672</td><td>철줌마효진님</td><td>299</td><td></td><td class="left">소음단</td><td></td></tr>
-<tr><td>zlzldydtk</td><td>지유의오른팔</td><td>299</td><td></td><td class="left">소음단</td><td></td></tr>
-<tr><td>stealth120</td><td>뜨거은비빔면</td><td>299</td><td></td><td class="left">소음단</td><td></td></tr>
-<tr><td>secrets21</td><td>딴딴한고로케</td><td>226</td><td></td><td class="left">소음단</td><td></td></tr>
-<tr><td>k203gon</td><td>창Bong</td><td>218</td><td></td><td class="left">소음단</td><td></td></tr>
-<tr><td>mfc0326</td><td>빵빡이2↑</td><td>200</td><td></td><td class="left">소음단</td><td></td></tr>
-<tr><td>nhamgaja95</td><td>빵빡이22호</td><td>109</td><td></td><td class="left">소음단</td><td></td></tr>
-<tr><td>suhjt72</td><td>[C9]존잘구</td><td>109</td><td></td><td class="left">소음단</td><td></td></tr>
-<tr><td>pcw990324</td><td>[C9]망순그랑</td><td>109</td><td></td><td class="left">소음단</td><td></td></tr>
-<tr><td>qwe3186</td><td>[C9]☆TOP</td><td>109</td><td></td><td class="left">소음단</td><td></td></tr>
+function colorByAmount(row,n){
+    if(n<=999) row.style.background="var(--lv1)";
+    else if(n<=2999) row.style.background="var(--lv2)";
+    else if(n<=9999) row.style.background="var(--lv3)";
+    else if(n<=49999) row.style.background="var(--lv4)";
+    else if(n<=100000) row.style.background="var(--lv5)";
+    else row.style.background="var(--lv6)";
+}
 
-<tr><td>imarrymei</td><td>풍쏘고말해요</td><td>100</td><td></td><td class="left">소음단</td><td></td></tr>
-<tr><td>krhtlgh123</td><td>족구369</td><td>100</td><td></td><td class="left">소음단</td><td></td></tr>
-<tr><td>kcgt6123</td><td>이슈킹</td><td>100</td><td></td><td class="left">소음단</td><td></td></tr>
-<tr><td>kimsumgk77</td><td>무상도</td><td>100</td><td></td><td class="left">소음단</td><td></td></tr>
-<tr><td>ksh5154</td><td>검은눈토끼</td><td>100</td><td></td><td class="left">소음단</td><td></td></tr>
-<tr><td>vdfntqa85</td><td>##38광땡</td><td>100</td><td></td><td class="left">소음단</td><td></td></tr>
-<tr><td>sh8888</td><td>[C9]철통령</td><td>100</td><td></td><td class="left">소음단</td><td></td></tr>
-<tr><td>times10</td><td>[C9]랑에</td><td>100</td><td></td><td class="left">소음단</td><td></td></tr>
-<tr><td>abss1003</td><td>[밍]먹족</td><td>100</td><td></td><td class="left">소음단</td><td></td></tr>
+function refresh(){
+    let sum=0,cnt=0;
+    document.querySelectorAll(".data-row").forEach(r=>{
+        const n=num(r.querySelector(".amount").innerText);
+        r.querySelector(".pledge").innerText=pledgeByAmount(n);
+        colorByAmount(r,n);
+        sum+=n; cnt++;
+    });
+    document.getElementById("sum").innerText=sum.toLocaleString();
+    document.getElementById("cnt").innerText=cnt+"명";
+}
 
-<tr class="sum">
-<td>합계</td><td>33명</td><td>409385</td><td>175765</td>
-<td>585150</td><td></td>
-</tr>
+document.addEventListener("input",refresh);
 
-</tbody>
-</table>
+document.getElementById("search").addEventListener("input",e=>{
+    const q=e.target.value.toLowerCase();
+    document.querySelectorAll(".data-row").forEach(r=>{
+        const t=(r.innerText||"").toLowerCase();
+        r.style.display=t.includes(q)?"flex":"none";
+    });
+});
 
+window.onload=refresh;
+</script>
 </body>
 </html>
