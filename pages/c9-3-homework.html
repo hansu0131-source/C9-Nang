@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐰 C9 3회차 숙제 체크</title>
+
+<style>
+body{
+  background:#FFF9D9;
+  font-family:"Pretendard",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  display:flex; justify-content:center;
+  padding:20px 16px; margin:0;
+  color:#3b2f10;
+}
+.wrap{ width:100%; max-width:1080px; margin:0 auto; }
+
+h1{
+  text-align:center;
+  font-size:22px; font-weight:900;
+  margin:6px 0 10px;
+  color:#C98B00;
+}
+.sub-title{
+  text-align:center;
+  font-size:13px;
+  margin-bottom:14px;
+  color:#8A6A00;
+}
+.nav-bar{
+  display:flex; justify-content:center; gap:8px;
+  margin-bottom:12px;
+}
+.nav-bar a{
+  font-size:12px;
+  padding:6px 12px;
+  border-radius:999px;
+  border:1px solid #FFE08A;
+  background:#fff;
+  text-decoration:none;
+  color:#6A4D00;
+  font-weight:700;
+}
+.nav-bar a:hover{ background:#FFF2B8; }
+
+.table-scroll{ overflow-x:auto; padding-bottom:4px; }
+.table{
+  display:flex; flex-direction:column; gap:4px;
+  min-width:1000px;
+}
+.row{
+  display:flex;
+  background:white;
+  border-radius:24px;
+  overflow:hidden;
+  box-shadow:0 1px 4px rgba(255,190,60,0.12);
+  padding:2px 0;
+}
+.cell{
+  padding:4px 8px;
+  font-size:14px;
+  display:inline-flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  border-right:1px solid #FFF1B9;
+  outline:none;
+  cursor:text;
+  white-space:normal;
+  word-break:keep-all;
+}
+.cell:last-child{ border-right:none; }
+
+.header{ background:#FFF2B8; }
+.header .cell{
+  font-weight:800;
+  color:#805B00;
+  border-bottom:2px solid #FFD96B;
+  cursor:default;
+}
+.summary-row{
+  background:#FFFDF1;
+  font-weight:800;
+  color:#6A4D00;
+}
+
+/* 열 너비 */
+.row .cell:nth-child(1){ width:130px; } /* 아이디 */
+.row .cell:nth-child(2){ width:130px; } /* 닉네임 */
+.row .cell:nth-child(3){ width:120px; } /* 숙제 종류 */
+.row .cell:nth-child(4){ width:90px;  } /* 낭플 */
+.row .cell:nth-child(5){ width:90px;  } /* 역팬 */
+.row .cell:nth-child(6){ width:70px;  } /* 사진 */
+.row .cell:nth-child(7){ width:70px;  } /* 움짤 */
+.row .cell:nth-child(8){ width:190px; } /* 비고 */
+.row .cell:nth-child(9){ width:80px;  } /* 버튼 */
+
+.action-cell{ position:relative; border-right:none; }
+.action-buttons{
+  display:none; gap:4px;
+  position:absolute; right:4px; top:50%;
+  transform:translateY(-50%);
+}
+.action-buttons button{
+  background:#FFE79A;
+  border:none; border-radius:999px;
+  padding:3px 7px;
+  font-size:11px;
+  cursor:pointer;
+  color:#6A4D00;
+  transition:background 0.15s ease, transform 0.15s ease;
+}
+.action-buttons button:hover{
+  background:#FFD96B;
+  transform:translateY(-1px);
+}
+.row.show-actions .action-buttons{ display:flex; }
+</style>
+</head>
+
+<body>
+<div class="wrap">
+
+  <h1>🐰 C9 3회차 숙제 체크</h1>
+  <p class="sub-title">※ 소음단(1000 미만)은 숙제에서 제외 / 1000 이상만 표시</p>
+
+  <div class="nav-bar">
+    <a href="../index.html">← 홈으로</a>
+    <a href="c9-3.html">← C9 3회차 낭플단</a>
+  </div>
+
+  <div class="table-scroll">
+    <div class="table" id="table">
+
+      <div class="row header">
+        <div class="cell">아이디</div>
+        <div class="cell">닉네임</div>
+        <div class="cell">숙제 종류</div>
+        <div class="cell">낭플</div>
+        <div class="cell">역팬(3%)</div>
+        <div class="cell">사진</div>
+        <div class="cell">움짤</div>
+        <div class="cell">비고</div>
+        <div class="cell action-cell"></div>
+      </div>
+
+      <!-- ====== C9-3 (1000 이상만) ====== -->
+      <div class="row data-row">
+        <div class="cell" contenteditable="true">fox11241</div>
+        <div class="cell" contenteditable="true">#woorinangni</div>
+        <div class="cell hwtype-cell" contenteditable="true"></div>
+        <div class="cell amount-cell" contenteditable="true">190874</div>
+        <div class="cell yeok-cell"></div>
+        <div class="cell photo-cell" contenteditable="true"></div>
+        <div class="cell gif-cell" contenteditable="true"></div>
+        <div class="cell" contenteditable="true"></div>
+        <div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div>
+      </div>
+
+      <div class="row data-row">
+        <div class="cell" contenteditable="true">dksl2233</div>
+        <div class="cell" contenteditable="true">[C9]잘해</div>
+        <div class="cell hwtype-cell" contenteditable="true"></div>
+        <div class="cell amount-cell" contenteditable="true">147890</div>
+        <div class="cell yeok-cell"></div>
+        <div class="cell photo-cell" contenteditable="true"></div>
+        <div class="cell gif-cell" contenteditable="true"></div>
+        <div class="cell" contenteditable="true"></div>
+        <div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div>
+      </div>
+
+      <div class="row data-row">
+        <div class="cell" contenteditable="true">jounguk892</div>
+        <div class="cell" contenteditable="true">꽂을때희열</div>
+        <div class="cell hwtype-cell" contenteditable="true"></div>
+        <div class="cell amount-cell" contenteditable="true">13883</div>
+        <div class="cell yeok-cell"></div>
+        <div class="cell photo-cell" contenteditable="true"></div>
+        <div class="cell gif-cell" contenteditable="true"></div>
+        <div class="cell" contenteditable="true"></div>
+        <div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div>
+      </div>
+
+      <div class="row data-row">
+        <div class="cell" contenteditable="true">tjd01084</div>
+        <div class="cell" contenteditable="true">낭겨울♥</div>
+        <div class="cell hwtype-cell" contenteditable="true"></div>
+        <div class="cell amount-cell" contenteditable="true">10782</div>
+        <div class="cell yeok-cell"></div>
+        <div class="cell photo-cell" contenteditable="true"></div>
+        <div class="cell gif-cell" contenteditable="true"></div>
+        <div class="cell" contenteditable="true"></div>
+        <div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div>
+      </div>
+
+      <div class="row data-row">
+        <div class="cell" contenteditable="true">gjckdtlr1744</div>
+        <div class="cell" contenteditable="true">얼빵얼빵얼빵</div>
+        <div class="cell hwtype-cell" contenteditable="true"></div>
+        <div class="cell amount-cell" contenteditable="true">10300</div>
+        <div class="cell yeok-cell"></div>
+        <div class="cell photo-cell" contenteditable="true"></div>
+        <div class="cell gif-cell" contenteditable="true"></div>
+        <div class="cell" contenteditable="true"></div>
+        <div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div>
+      </div>
+
+      <div class="row data-row">
+        <div class="cell" contenteditable="true">noble275</div>
+        <div class="cell" contenteditable="true">꼬라지하고는</div>
+        <div class="cell hwtype-cell" contenteditable="true"></div>
+        <div class="cell amount-cell" contenteditable="true">10069</div>
+        <div class="cell yeok-cell"></div>
+        <div class="cell photo-cell" contenteditable="true"></div>
+        <div class="cell gif-cell" contenteditable="true"></div>
+        <div class="cell" contenteditable="true"></div>
+        <div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div>
+      </div>
+
+      <div class="row data-row">
+        <div class="cell" contenteditable="true">lommy0124</div>
+        <div class="cell" contenteditable="true">Grok29</div>
+        <div class="cell hwtype-cell" contenteditable="true"></div>
+        <div class="cell amount-cell" contenteditable="true">10000</div>
+        <div class="cell yeok-cell"></div>
+        <div class="cell photo-cell" contenteditable="true"></div>
+        <div class="cell gif-cell" contenteditable="true"></div>
+        <div class="cell" contenteditable="true"></div>
+        <div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div>
+      </div>
+
+      <div class="row data-row">
+        <div class="cell" contenteditable="true">kokoko2151</div>
+        <div class="cell" contenteditable="true">로넌</div>
+        <div class="cell hwtype-cell" contenteditable="true"></div>
+        <div class="cell amount-cell" contenteditable="true">5734</div>
+        <div class="cell yeok-cell"></div>
+        <div class="cell photo-cell" contenteditable="true"></div>
+        <div class="cell gif-cell" contenteditable="true"></div>
+        <div class="cell" contenteditable="true"></div>
+        <div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div>
+      </div>
+
+      <div class="row data-row">
+        <div class="cell" contenteditable="true">tmddn6630</div>
+        <div class="cell" contenteditable="true">VALeNTiNo_</div>
+        <div class="cell hwtype-cell" contenteditable="true"></div>
+        <div class="cell amount-cell" contenteditable="true">3064</div>
+        <div class="cell yeok-cell"></div>
+        <div class="cell photo-cell" contenteditable="true"></div>
+        <div class="cell gif-cell" contenteditable="true"></div>
+        <div class="cell" contenteditable="true"></div>
+        <div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div>
+      </div>
+
+      <div class="row data-row">
+        <div class="cell" contenteditable="true">tomorrow1111</div>
+        <div class="cell" contenteditable="true">조블노엘</div>
+        <div class="cell hwtype-cell" contenteditable="true"></div>
+        <div class="cell amount-cell" contenteditable="true">1678</div>
+        <div class="cell yeok-cell"></div>
+        <div class="cell photo-cell" contenteditable="true"></div>
+        <div class="cell gif-cell" contenteditable="true"></div>
+        <div class="cell" contenteditable="true"></div>
+        <div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div>
+      </div>
+
+      <div class="row data-row">
+        <div class="cell" contenteditable="true">malguman</div>
+        <div class="cell" contenteditable="true">도맑음</div>
+        <div class="cell hwtype-cell" contenteditable="true"></div>
+        <div class="cell amount-cell" contenteditable="true">1225</div>
+        <div class="cell yeok-cell"></div>
+        <div class="cell photo-cell" contenteditable="true"></div>
+        <div class="cell gif-cell" contenteditable="true"></div>
+        <div class="cell" contenteditable="true"></div>
+        <div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div>
+      </div>
+
+      <!-- 합계 -->
+      <div class="row summary-row">
+        <div class="cell">합계</div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell summary-nangpul"></div>
+        <div class="cell summary-yeok"></div>
+        <div class="cell summary-photo"></div>
+        <div class="cell summary-gif"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function n(v){ return parseInt(String(v??"").replace(/[^0-9]/g,"")) || 0; }
+function setText(el, val){ if(el) el.textContent = val || ""; }
+
+/* 공약 구간 → 숙제(사진/움짤/종류) 자동 */
+function rule(amount){
+  // amount는 1000 이상만 (소음단은 페이지에 없음)
+  if(amount >= 1000 && amount <= 2999){
+    return { type:"고정 사진 방셀", photo:"1+", gif:"0" };
+  }
+  if(amount >= 3000 && amount <= 4999){
+    return { type:"방셀", photo:"2", gif:"0" };
+  }
+  if(amount >= 5000 && amount <= 9999){
+    return { type:"방셀", photo:"2", gif:"1" };
+  }
+  // 10000 이상은 정성방셀로 묶음
+  return { type:"정성방셀", photo:"4", gif:"4" };
+}
+
+/* 전체 계산 */
+function updateAll(){
+  let totalN=0, totalY=0, totalP=0, totalG=0;
+
+  document.querySelectorAll(".data-row").forEach(row=>{
+    const amountCell = row.querySelector(".amount-cell");
+    const yeokCell   = row.querySelector(".yeok-cell");
+    const typeCell   = row.querySelector(".hwtype-cell");
+    const photoCell  = row.querySelector(".photo-cell");
+    const gifCell    = row.querySelector(".gif-cell");
+
+    const amount = n(amountCell?.textContent);
+    totalN += amount;
+
+    // 역팬 3%
+    const yeok = Math.floor(amount * 0.03);
+    setText(yeokCell, yeok ? yeok.toLocaleString() : "");
+    totalY += yeok;
+
+    // 자동 숙제 세팅(사용자가 수정하면 그대로 두고 싶으면 여기 조건만 바꾸면 됨)
+    const r = rule(amount);
+    if(typeCell && !typeCell.textContent.trim()) typeCell.textContent = r.type;
+    if(photoCell && !photoCell.textContent.trim()) photoCell.textContent = r.photo;
+    if(gifCell && !gifCell.textContent.trim()) gifCell.textContent = r.gif;
+
+    // 합계용 숫자(1+ 같은 값도 숫자만 추출)
+    totalP += n(photoCell?.textContent);
+    totalG += n(gifCell?.textContent);
+  });
+
+  document.querySelector(".summary-nangpul").textContent = totalN.toLocaleString();
+  document.querySelector(".summary-yeok").textContent = totalY.toLocaleString();
+  document.querySelector(".summary-photo").textContent = totalP.toLocaleString();
+  document.querySelector(".summary-gif").textContent = totalG.toLocaleString();
+}
+
+/* 행 추가/삭제 */
+function addRow(after){
+  const newRow = after.cloneNode(true);
+  newRow.querySelectorAll(".cell").forEach(c=>{
+    if(c.classList.contains("action-cell")) return;
+    if(c.classList.contains("yeok-cell")) c.textContent = "";
+    else c.textContent = "";
+  });
+  after.insertAdjacentElement("afterend", newRow);
+  updateAll();
+}
+function deleteRow(row){
+  if(document.querySelectorAll(".data-row").length <= 1){
+    alert("마지막 행은 삭제 불가");
+    return;
+  }
+  row.remove();
+  updateAll();
+}
+
+document.addEventListener("click",(e)=>{
+  const row = e.target.closest(".data-row");
+  document.querySelectorAll(".data-row").forEach(r=>r.classList.remove("show-actions"));
+  if(row) row.classList.add("show-actions");
+
+  if(e.target.classList.contains("add")) addRow(row);
+  if(e.target.classList.contains("del")) deleteRow(row);
+});
+
+document.addEventListener("input", ()=> updateAll());
+window.onload = updateAll;
+</script>
+
+</body>
+</html>
