@@ -14,7 +14,7 @@ body{
   color:#1f3d2b;
 }
 
-/* 상단 네비 */
+/* 상단 네비 버튼 */
 .nav-top{ display:flex; gap:8px; margin-bottom:14px; }
 .nav-btn{
   padding:6px 14px;
@@ -34,10 +34,10 @@ h1{
   color:#2E8B57;
 }
 
-/* 검색 */
+/* 검색 바 */
 .filter-bar{
-  display:flex; justify-content:center;
-  margin-bottom:12px;
+  display:flex; justify-content:center; gap:8px;
+  margin-bottom:12px; font-size:13px;
 }
 .filter-bar input{
   flex:1; max-width:280px;
@@ -52,10 +52,11 @@ h1{
   box-shadow:0 0 0 2px rgba(46,139,87,0.25);
 }
 
-/* 테이블 */
 .table-scroll{ overflow-x:auto; padding-bottom:4px; }
-.table{ display:flex; flex-direction:column; gap:4px; min-width:860px; }
-
+.table{
+  display:flex; flex-direction:column; gap:4px;
+  min-width:980px;
+}
 .row{
   display:flex;
   background:white;
@@ -63,22 +64,24 @@ h1{
   overflow:hidden;
   box-shadow:0 1px 4px rgba(46,139,87,0.12);
   padding:2px 0;
+  transition:box-shadow 0.15s ease, transform 0.15s ease;
 }
 .data-row:hover{
   box-shadow:0 3px 10px rgba(46,139,87,0.22);
   transform:translateY(-1px);
 }
-
 .cell{
   padding:4px 8px;
   font-size:14px;
-  display:flex;
+  display:inline-flex;
   justify-content:center;
   align-items:center;
   text-align:center;
   border-right:1px solid #E1F3EA;
   outline:none;
   cursor:text;
+  white-space:normal;
+  word-break:keep-all;
 }
 .cell:last-child{ border-right:none; }
 
@@ -93,31 +96,53 @@ h1{
 .summary-row{
   background:#F1FBF6;
   font-weight:800;
+  color:#1f5c3b;
 }
 
-/* 열 너비 */
-.row .cell:nth-child(1){ width:130px; }
-.row .cell:nth-child(2){ width:130px; }
-.row .cell:nth-child(3){ width:90px; }
-.row .cell:nth-child(4){ width:90px; }
-.row .cell:nth-child(5){ width:520px; }
-.row .cell:nth-child(6){ width:110px; }
-.row .cell:nth-child(7){ width:80px; }
+/* 열 너비 (이벤트 컬럼 추가) */
+.row .cell:nth-child(1){ width:130px; } /* 아이디 */
+.row .cell:nth-child(2){ width:130px; } /* 닉네임 */
+.row .cell:nth-child(3){ width:90px;  } /* 낭플 */
+.row .cell:nth-child(4){ width:90px;  } /* 원플원 */
+.row .cell:nth-child(5){ width:90px;  } /* 이벤트 */
+.row .cell:nth-child(6){ width:430px; } /* 공약 */
+.row .cell:nth-child(7){ width:110px; } /* 비고 */
+.row .cell:nth-child(8){ width:80px;  } /* 버튼 */
 
-/* 시즌2 색상 단계 */
+.action-cell{ position:relative; border-right:none; }
+.action-buttons{
+  display:none; gap:4px;
+  position:absolute; right:4px; top:50%;
+  transform:translateY(-50%);
+}
+.action-buttons button{
+  background:#CDEEDD;
+  border:none; border-radius:999px;
+  padding:3px 7px;
+  font-size:11px;
+  cursor:pointer;
+  color:#1f5c3b;
+  transition:background 0.15s ease, transform 0.15s ease;
+}
+.action-buttons button:hover{
+  background:#B6E5CE;
+  transform:translateY(-1px);
+}
+.row.show-actions .action-buttons{ display:flex; }
+
+/* 색상 단계 (총합 기준) */
 :root{
   --lv0:#FFFFFF;
-  --lv1:#F1FBF6;
-  --lv2:#E6F4EC;
-  --lv3:#D7EFE3;
-  --lv4:#C6E8D7;
-  --lv5:#B6E2C8;
-  --lv6:#9FD9B7;
-  --lv7:#7FCC9F;
-  --lv8:#5EBF86;
-  --lv9:#3AAA6A;
+  --lv1:#F1FBF6; /* 100~298 */
+  --lv2:#E6F4EC; /* 299~999 */
+  --lv3:#D7EFE3; /* 1000~2999 */
+  --lv4:#C6E8D7; /* 3000~4999 */
+  --lv5:#B6E2C8; /* 5000~9999 */
+  --lv6:#9FD9B7; /* 10000~49999 */
+  --lv7:#7FCC9F; /* 50000~100000 */
+  --lv8:#5EBF86; /* 100000~299999 */
+  --lv9:#3AAA6A; /* 300000~ */
 }
-
 .small-note{
   text-align:center;
   font-size:12px;
@@ -136,7 +161,7 @@ h1{
   </div>
 
   <h1>🐰 C9 시즌2 · 1회차 낭플단</h1>
-  <div class="small-note">※ 1000개 미만은 공약이 “소음단”으로 자동 표기됩니다.</div>
+  <div class="small-note">※ 공약은 “총합(낭플+원플원+이벤트)” 구간으로 자동 입력됩니다.</div>
 
   <div class="filter-bar">
     <input id="search" type="text" placeholder="아이디 / 닉네임 검색">
@@ -150,42 +175,241 @@ h1{
         <div class="cell">닉네임</div>
         <div class="cell">낭플</div>
         <div class="cell">원플원</div>
+        <div class="cell">이벤트</div>
         <div class="cell">공약</div>
         <div class="cell">비고</div>
-        <div class="cell"></div>
+        <div class="cell action-cell"></div>
       </div>
 
-      <!-- ===== S2-1 전체 데이터 ===== -->
+      <!-- ====== S2-1 데이터 (전원) ====== -->
+      <div class="row data-row">
+        <div class="cell" contenteditable="true">poksavi2</div>
+        <div class="cell" contenteditable="true">시래</div>
+        <div class="cell amount-cell" contenteditable="true">60957</div>
+        <div class="cell oneplus-cell" contenteditable="true">15151</div>
+        <div class="cell event-cell" contenteditable="true">18176</div>
+        <div class="cell pledge-cell" contenteditable="true">카톡 + 역팬 3% + 정성방셀 + 소소한선물</div>
+        <div class="cell" contenteditable="true"></div>
+        <div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div>
+      </div>
 
-      <div class="row data-row"><div class="cell" contenteditable="true">poksavi2</div><div class="cell" contenteditable="true">시래</div><div class="cell amount-cell" contenteditable="true">60957</div><div class="cell oneplus-cell" contenteditable="true">15151</div><div class="cell pledge-cell" contenteditable="true">카톡 + 역팬 3% + 정성방셀 + 소소한선물</div><div class="cell"></div><div class="cell"></div></div>
-      <div class="row data-row"><div class="cell" contenteditable="true">kobongkobong</div><div class="cell" contenteditable="true">Summer.G</div><div class="cell amount-cell" contenteditable="true">33000</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">족버지의 은혜....</div><div class="cell"></div><div class="cell"></div></div>
-      <div class="row data-row"><div class="cell" contenteditable="true">wjddudtjr777</div><div class="cell" contenteditable="true">낭무새</div><div class="cell amount-cell" contenteditable="true">11111</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">카톡 + 역팬 3% + 정성방셀 or 원하는 직원과 방셀(대표님 포함)</div><div class="cell"></div><div class="cell"></div></div>
-      <div class="row data-row"><div class="cell" contenteditable="true">yurinezip</div><div class="cell" contenteditable="true">허군+</div><div class="cell amount-cell" contenteditable="true">9999</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">카톡 + 역팬 3% + 정성방셀 or 원하는 직원과 방셀(대표님 포함)</div><div class="cell"></div><div class="cell"></div></div>
-      <div class="row data-row"><div class="cell" contenteditable="true">doco100</div><div class="cell" contenteditable="true">봉다리#</div><div class="cell amount-cell" contenteditable="true">5069</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">카톡 + 역팬 3% + 정성방셀 or 원하는 직원과 방셀(대표님 포함)</div><div class="cell"></div><div class="cell"></div></div>
-      <div class="row data-row"><div class="cell" contenteditable="true">hamjacingu</div><div class="cell" contenteditable="true">[C9]5수생</div><div class="cell amount-cell" contenteditable="true">5050</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">카톡 + 역팬 3% + 정성방셀 or 원하는 직원과 방셀(대표님 포함)</div><div class="cell"></div><div class="cell"></div></div>
-      <div class="row data-row"><div class="cell" contenteditable="true">dumbo0131</div><div class="cell" contenteditable="true">당군+</div><div class="cell amount-cell" contenteditable="true">5800</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">역팬3% + 방셀 (사진 2장, 움짤 1장)</div><div class="cell"></div><div class="cell"></div></div>
-      <div class="row data-row"><div class="cell" contenteditable="true">gjckdtlr1744</div><div class="cell" contenteditable="true">얼빵얼빵얼빵</div><div class="cell amount-cell" contenteditable="true">4225</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">역팬3% + 방셀 (사진 2장)</div><div class="cell"></div><div class="cell"></div></div>
-      <div class="row data-row"><div class="cell" contenteditable="true">nrladhksrb96</div><div class="cell" contenteditable="true">라렌이</div><div class="cell amount-cell" contenteditable="true">3027</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">역팬3% + 방셀 (사진 2장)</div><div class="cell"></div><div class="cell"></div></div>
-      <div class="row data-row"><div class="cell" contenteditable="true">s2000kr</div><div class="cell" contenteditable="true">무수땡큐</div><div class="cell amount-cell" contenteditable="true">3000</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">역팬3% + 방셀 (사진 2장)</div><div class="cell"></div><div class="cell"></div></div>
-      <div class="row data-row"><div class="cell" contenteditable="true">imarrymei</div><div class="cell" contenteditable="true">풍쏘고말해요</div><div class="cell amount-cell" contenteditable="true">1510</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">역팬 3% + 고정 사진 방셀</div><div class="cell"></div><div class="cell"></div></div>
-      <div class="row data-row"><div class="cell" contenteditable="true">scatme</div><div class="cell" contenteditable="true">끄와앙</div><div class="cell amount-cell" contenteditable="true">1510</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">역팬 3% + 고정 사진 방셀</div><div class="cell"></div><div class="cell"></div></div>
-      <div class="row data-row"><div class="cell" contenteditable="true">kkkk1668</div><div class="cell" contenteditable="true">kkkk1668</div><div class="cell amount-cell" contenteditable="true">1225</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">역팬 3% + 고정 사진 방셀</div><div class="cell"></div><div class="cell"></div></div>
-      <div class="row data-row"><div class="cell" contenteditable="true">sdroxbnq63</div><div class="cell" contenteditable="true">[C9]참치마요</div><div class="cell amount-cell" contenteditable="true">1009</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">역팬 3% + 고정 사진 방셀</div><div class="cell"></div><div class="cell"></div></div>
-      <div class="row data-row"><div class="cell" contenteditable="true">yh0242yh</div><div class="cell" contenteditable="true">오늘은자요</div><div class="cell amount-cell" contenteditable="true">1000</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">역팬 3% + 고정 사진 방셀</div><div class="cell"></div><div class="cell"></div></div>
+      <div class="row data-row">
+        <div class="cell" contenteditable="true">kobongkobong</div>
+        <div class="cell" contenteditable="true">Summer.G</div>
+        <div class="cell amount-cell" contenteditable="true">33000</div>
+        <div class="cell oneplus-cell" contenteditable="true"></div>
+        <div class="cell event-cell" contenteditable="true"></div>
+        <div class="cell pledge-cell" contenteditable="true">족버지의 은혜....</div>
+        <div class="cell" contenteditable="true"></div>
+        <div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div>
+      </div>
+
+      <div class="row data-row">
+        <div class="cell" contenteditable="true">wjddudtjr777</div>
+        <div class="cell" contenteditable="true">낭무새</div>
+        <div class="cell amount-cell" contenteditable="true">11111</div>
+        <div class="cell oneplus-cell" contenteditable="true"></div>
+        <div class="cell event-cell" contenteditable="true">11000</div>
+        <div class="cell pledge-cell" contenteditable="true">카톡 + 역팬 3% + 정성방셀 or 원하는 직원과 방셀(대표님 포함)</div>
+        <div class="cell" contenteditable="true"></div>
+        <div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div>
+      </div>
+
+      <div class="row data-row">
+        <div class="cell" contenteditable="true">yurinezip</div>
+        <div class="cell" contenteditable="true">허군+</div>
+        <div class="cell amount-cell" contenteditable="true">9999</div>
+        <div class="cell oneplus-cell" contenteditable="true"></div>
+        <div class="cell event-cell" contenteditable="true"></div>
+        <div class="cell pledge-cell" contenteditable="true">카톡 + 역팬 3% + 정성방셀 or 원하는 직원과 방셀(대표님 포함)</div>
+        <div class="cell" contenteditable="true"></div>
+        <div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div>
+      </div>
+
+      <div class="row data-row">
+        <div class="cell" contenteditable="true">doco100</div>
+        <div class="cell" contenteditable="true">봉다리#</div>
+        <div class="cell amount-cell" contenteditable="true">5069</div>
+        <div class="cell oneplus-cell" contenteditable="true"></div>
+        <div class="cell event-cell" contenteditable="true">5069</div>
+        <div class="cell pledge-cell" contenteditable="true">카톡 + 역팬 3% + 정성방셀 or 원하는 직원과 방셀(대표님 포함)</div>
+        <div class="cell" contenteditable="true"></div>
+        <div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div>
+      </div>
+
+      <div class="row data-row">
+        <div class="cell" contenteditable="true">hamjacingu</div>
+        <div class="cell" contenteditable="true">[C9]5수생</div>
+        <div class="cell amount-cell" contenteditable="true">5050</div>
+        <div class="cell oneplus-cell" contenteditable="true"></div>
+        <div class="cell event-cell" contenteditable="true">5050</div>
+        <div class="cell pledge-cell" contenteditable="true">카톡 + 역팬 3% + 정성방셀 or 원하는 직원과 방셀(대표님 포함)</div>
+        <div class="cell" contenteditable="true"></div>
+        <div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div>
+      </div>
+
+      <div class="row data-row">
+        <div class="cell" contenteditable="true">dumbo0131</div>
+        <div class="cell" contenteditable="true">당군+</div>
+        <div class="cell amount-cell" contenteditable="true">5800</div>
+        <div class="cell oneplus-cell" contenteditable="true"></div>
+        <div class="cell event-cell" contenteditable="true"></div>
+        <div class="cell pledge-cell" contenteditable="true">역팬3% + 방셀 (사진 2장, 움짤 1장)</div>
+        <div class="cell" contenteditable="true"></div>
+        <div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div>
+      </div>
+
+      <div class="row data-row">
+        <div class="cell" contenteditable="true">gjckdtlr1744</div>
+        <div class="cell" contenteditable="true">얼빵얼빵얼빵</div>
+        <div class="cell amount-cell" contenteditable="true">4225</div>
+        <div class="cell oneplus-cell" contenteditable="true"></div>
+        <div class="cell event-cell" contenteditable="true"></div>
+        <div class="cell pledge-cell" contenteditable="true">역팬3% + 방셀 (사진 2장)</div>
+        <div class="cell" contenteditable="true"></div>
+        <div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div>
+      </div>
+
+      <div class="row data-row">
+        <div class="cell" contenteditable="true">nrladhksrb96</div>
+        <div class="cell" contenteditable="true">라렌이</div>
+        <div class="cell amount-cell" contenteditable="true">3027</div>
+        <div class="cell oneplus-cell" contenteditable="true"></div>
+        <div class="cell event-cell" contenteditable="true"></div>
+        <div class="cell pledge-cell" contenteditable="true">역팬3% + 방셀 (사진 2장)</div>
+        <div class="cell" contenteditable="true"></div>
+        <div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div>
+      </div>
+
+      <div class="row data-row">
+        <div class="cell" contenteditable="true">s2000kr</div>
+        <div class="cell" contenteditable="true">무수땡큐</div>
+        <div class="cell amount-cell" contenteditable="true">3000</div>
+        <div class="cell oneplus-cell" contenteditable="true"></div>
+        <div class="cell event-cell" contenteditable="true"></div>
+        <div class="cell pledge-cell" contenteditable="true">역팬3% + 방셀 (사진 2장)</div>
+        <div class="cell" contenteditable="true"></div>
+        <div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div>
+      </div>
+
+      <div class="row data-row">
+        <div class="cell" contenteditable="true">imarrymei</div>
+        <div class="cell" contenteditable="true">풍쏘고말해요</div>
+        <div class="cell amount-cell" contenteditable="true">1510</div>
+        <div class="cell oneplus-cell" contenteditable="true"></div>
+        <div class="cell event-cell" contenteditable="true"></div>
+        <div class="cell pledge-cell" contenteditable="true">역팬 3% + 고정 사진 방셀</div>
+        <div class="cell" contenteditable="true"></div>
+        <div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div>
+      </div>
+
+      <div class="row data-row">
+        <div class="cell" contenteditable="true">scatme</div>
+        <div class="cell" contenteditable="true">끄와앙</div>
+        <div class="cell amount-cell" contenteditable="true">1510</div>
+        <div class="cell oneplus-cell" contenteditable="true"></div>
+        <div class="cell event-cell" contenteditable="true"></div>
+        <div class="cell pledge-cell" contenteditable="true">역팬 3% + 고정 사진 방셀</div>
+        <div class="cell" contenteditable="true"></div>
+        <div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div>
+      </div>
+
+      <div class="row data-row">
+        <div class="cell" contenteditable="true">kkkk1668</div>
+        <div class="cell" contenteditable="true">kkkk1668</div>
+        <div class="cell amount-cell" contenteditable="true">1225</div>
+        <div class="cell oneplus-cell" contenteditable="true"></div>
+        <div class="cell event-cell" contenteditable="true"></div>
+        <div class="cell pledge-cell" contenteditable="true">역팬 3% + 고정 사진 방셀</div>
+        <div class="cell" contenteditable="true"></div>
+        <div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div>
+      </div>
+
+      <div class="row data-row">
+        <div class="cell" contenteditable="true">sdroxbnq63</div>
+        <div class="cell" contenteditable="true">[C9]참치마요</div>
+        <div class="cell amount-cell" contenteditable="true">1009</div>
+        <div class="cell oneplus-cell" contenteditable="true"></div>
+        <div class="cell event-cell" contenteditable="true"></div>
+        <div class="cell pledge-cell" contenteditable="true">역팬 3% + 고정 사진 방셀</div>
+        <div class="cell" contenteditable="true"></div>
+        <div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div>
+      </div>
+
+      <div class="row data-row">
+        <div class="cell" contenteditable="true">yh0242yh</div>
+        <div class="cell" contenteditable="true">오늘은자요</div>
+        <div class="cell amount-cell" contenteditable="true">1000</div>
+        <div class="cell oneplus-cell" contenteditable="true"></div>
+        <div class="cell event-cell" contenteditable="true"></div>
+        <div class="cell pledge-cell" contenteditable="true">역팬 3% + 고정 사진 방셀</div>
+        <div class="cell" contenteditable="true"></div>
+        <div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div>
+      </div>
 
       <!-- 소음단 -->
-      <div class="row data-row"><div class="cell" contenteditable="true">dydwns951107</div><div class="cell" contenteditable="true">쓰쓰__</div><div class="cell amount-cell" contenteditable="true">299</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">소음단</div><div class="cell"></div><div class="cell"></div></div>
-      <div class="row data-row"><div class="cell" contenteditable="true">moxxg22</div><div class="cell" contenteditable="true">[C9]철때지</div><div class="cell amount-cell" contenteditable="true">218</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">소음단</div><div class="cell"></div><div class="cell"></div></div>
-      <div class="row data-row"><div class="cell" contenteditable="true">k203gon</div><div class="cell" contenteditable="true">창Bong</div><div class="cell amount-cell" contenteditable="true">109</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">소음단</div><div class="cell"></div><div class="cell"></div></div>
-      <div class="row data-row"><div class="cell" contenteditable="true">qwe3186</div><div class="cell" contenteditable="true">[C9]☆TOP</div><div class="cell amount-cell" contenteditable="true">109</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">소음단</div><div class="cell"></div><div class="cell"></div></div>
-      <div class="row data-row"><div class="cell" contenteditable="true">jjang4279</div><div class="cell" contenteditable="true">팥븅죠아</div><div class="cell amount-cell" contenteditable="true">100</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">소음단</div><div class="cell"></div><div class="cell"></div></div>
-      <div class="row data-row"><div class="cell" contenteditable="true">imposter112</div><div class="cell" contenteditable="true">채시현의탱크</div><div class="cell amount-cell" contenteditable="true">100</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">소음단</div><div class="cell"></div><div class="cell"></div></div>
-      <div class="row data-row"><div class="cell" contenteditable="true">zlzldydtk</div><div class="cell" contenteditable="true">지유의오른팔</div><div class="cell amount-cell" contenteditable="true">100</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">소음단</div><div class="cell"></div><div class="cell"></div></div>
-      <div class="row data-row"><div class="cell" contenteditable="true">krhtlgh123</div><div class="cell" contenteditable="true">족구369</div><div class="cell amount-cell" contenteditable="true">100</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">소음단</div><div class="cell"></div><div class="cell"></div></div>
-      <div class="row data-row"><div class="cell" contenteditable="true">mfc0326</div><div class="cell" contenteditable="true">빵빡이2↑</div><div class="cell amount-cell" contenteditable="true">100</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">소음단</div><div class="cell"></div><div class="cell"></div></div>
-      <div class="row data-row"><div class="cell" contenteditable="true">kimsumgk77</div><div class="cell" contenteditable="true">무상도</div><div class="cell amount-cell" contenteditable="true">100</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">소음단</div><div class="cell"></div><div class="cell"></div></div>
-      <div class="row data-row"><div class="cell" contenteditable="true">slionics</div><div class="cell" contenteditable="true">☆패션☆</div><div class="cell amount-cell" contenteditable="true">100</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">소음단</div><div class="cell"></div><div class="cell"></div></div>
-      <div class="row data-row"><div class="cell" contenteditable="true">qkrwhdtj2003</div><div class="cell" contenteditable="true">[C9]허당박</div><div class="cell amount-cell" contenteditable="true">100</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">소음단</div><div class="cell"></div><div class="cell"></div></div>
+      <div class="row data-row">
+        <div class="cell" contenteditable="true">dydwns951107</div>
+        <div class="cell" contenteditable="true">쓰쓰__</div>
+        <div class="cell amount-cell" contenteditable="true">299</div>
+        <div class="cell oneplus-cell" contenteditable="true"></div>
+        <div class="cell event-cell" contenteditable="true"></div>
+        <div class="cell pledge-cell" contenteditable="true">소음단</div>
+        <div class="cell" contenteditable="true">소음단</div>
+        <div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div>
+      </div>
+
+      <div class="row data-row">
+        <div class="cell" contenteditable="true">moxxg22</div>
+        <div class="cell" contenteditable="true">[C9]철때지</div>
+        <div class="cell amount-cell" contenteditable="true">218</div>
+        <div class="cell oneplus-cell" contenteditable="true"></div>
+        <div class="cell event-cell" contenteditable="true"></div>
+        <div class="cell pledge-cell" contenteditable="true">소음단</div>
+        <div class="cell" contenteditable="true">소음단</div>
+        <div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div>
+      </div>
+
+      <div class="row data-row">
+        <div class="cell" contenteditable="true">k203gon</div>
+        <div class="cell" contenteditable="true">창Bong</div>
+        <div class="cell amount-cell" contenteditable="true">109</div>
+        <div class="cell oneplus-cell" contenteditable="true"></div>
+        <div class="cell event-cell" contenteditable="true"></div>
+        <div class="cell pledge-cell" contenteditable="true">소음단</div>
+        <div class="cell" contenteditable="true">소음단</div>
+        <div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div>
+      </div>
+
+      <div class="row data-row">
+        <div class="cell" contenteditable="true">qwe3186</div>
+        <div class="cell" contenteditable="true">[C9]☆TOP</div>
+        <div class="cell amount-cell" contenteditable="true">109</div>
+        <div class="cell oneplus-cell" contenteditable="true"></div>
+        <div class="cell event-cell" contenteditable="true"></div>
+        <div class="cell pledge-cell" contenteditable="true">소음단</div>
+        <div class="cell" contenteditable="true">소음단</div>
+        <div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div>
+      </div>
+
+      <div class="row data-row">
+        <div class="cell" contenteditable="true">jjang4279</div>
+        <div class="cell" contenteditable="true">팥븅죠아</div>
+        <div class="cell amount-cell" contenteditable="true">100</div>
+        <div class="cell oneplus-cell" contenteditable="true"></div>
+        <div class="cell event-cell" contenteditable="true"></div>
+        <div class="cell pledge-cell" contenteditable="true">소음단</div>
+        <div class="cell" contenteditable="true">소음단</div>
+        <div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div>
+      </div>
+
+      <div class="row data-row"><div class="cell" contenteditable="true">imposter112</div><div class="cell" contenteditable="true">채시현의탱크</div><div class="cell amount-cell" contenteditable="true">100</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell event-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">소음단</div><div class="cell" contenteditable="true">소음단</div><div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div></div>
+      <div class="row data-row"><div class="cell" contenteditable="true">zlzldydtk</div><div class="cell" contenteditable="true">지유의오른팔</div><div class="cell amount-cell" contenteditable="true">100</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell event-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">소음단</div><div class="cell" contenteditable="true">소음단</div><div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div></div>
+      <div class="row data-row"><div class="cell" contenteditable="true">krhtlgh123</div><div class="cell" contenteditable="true">족구369</div><div class="cell amount-cell" contenteditable="true">100</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell event-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">소음단</div><div class="cell" contenteditable="true">소음단</div><div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div></div>
+      <div class="row data-row"><div class="cell" contenteditable="true">mfc0326</div><div class="cell" contenteditable="true">빵빡이2↑</div><div class="cell amount-cell" contenteditable="true">100</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell event-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">소음단</div><div class="cell" contenteditable="true">소음단</div><div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div></div>
+      <div class="row data-row"><div class="cell" contenteditable="true">kimsumgk77</div><div class="cell" contenteditable="true">무상도</div><div class="cell amount-cell" contenteditable="true">100</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell event-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">소음단</div><div class="cell" contenteditable="true">소음단</div><div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div></div>
+      <div class="row data-row"><div class="cell" contenteditable="true">slionics</div><div class="cell" contenteditable="true">☆패션☆</div><div class="cell amount-cell" contenteditable="true">100</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell event-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">소음단</div><div class="cell" contenteditable="true">소음단</div><div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div></div>
+      <div class="row data-row"><div class="cell" contenteditable="true">qkrwhdtj2003</div><div class="cell" contenteditable="true">[C9]허당박</div><div class="cell amount-cell" contenteditable="true">100</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell event-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">소음단</div><div class="cell" contenteditable="true">소음단</div><div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div></div>
 
       <!-- 합계 -->
       <div class="row summary-row">
@@ -193,6 +417,7 @@ h1{
         <div class="cell summary-count"></div>
         <div class="cell summary-nang"></div>
         <div class="cell summary-one"></div>
+        <div class="cell summary-event"></div>
         <div class="cell summary-total"></div>
         <div class="cell"></div>
         <div class="cell"></div>
@@ -206,77 +431,141 @@ h1{
 function getNumber(v){
   return parseInt(String(v ?? "").replace(/[^0-9]/g,"")) || 0;
 }
-function pledgeByAmount(n){
-  if(n < 1000) return "소음단";
-  if(n <= 2999) return "역팬 3% + 고정 사진 방셀";
-  if(n <= 4999) return "역팬3% + 방셀 (사진 2장)";
-  if(n <= 9999) return "역팬3% + 방셀 (사진 2장, 움짤 1장)";
-  if(n <= 49999) return "카톡 + 역팬 3% + 정성방셀 or 원하는 직원과 방셀(대표님 포함)";
-  if(n <= 100000) return "카톡 + 역팬 3% + 정성방셀 + 소소한선물";
-  if(n <= 299999) return "정성방셀 + 역팬 3% or 배민 50만원 + 방송소원권 + 식데";
-  return "정성방셀 + 역팬 3% or 배민 100만원 + 식데 + 술데 + 백화점 데이트";
+
+/* ✅ 총합(낭플+원플원+이벤트) 기준 공약 룰 */
+function pledgeByTotal(t){
+  if(t < 1000) return "소음단";
+  if(t <= 2999) return "역팬 3% + 고정 사진 방셀";
+  if(t <= 4999) return "역팬3% + 방셀 (사진 2장)";
+  if(t <= 9999) return "역팬3% + 방셀 (사진 2장, 움짤 1장)";
+  if(t <= 49999) return "카톡 + 역팬 3% + 정성방셀 or 원하는 직원과 방셀";
+  if(t <= 100000) return "카톡 + 역팬 3% + 정성방셀 + 소소한선물";
+  if(t <= 299999) return "정성방셀 + 역팬 3% or 배민 50만원 + 방송소원권 + 식데";
+  return "정성방셀 + 역팬 3% or 배민 100만원 + 식데 + 술데";
 }
-function applyRowStyle(row){
+
+/* 총합 계산 */
+function getTotal(row){
   const n = getNumber(row.querySelector(".amount-cell")?.innerText);
+  const o = getNumber(row.querySelector(".oneplus-cell")?.innerText);
+  const e = getNumber(row.querySelector(".event-cell")?.innerText);
+  return { n, o, e, t: n + o + e };
+}
+
+/* 행 색상 (총합 기준) */
+function applyRowStyle(row){
+  const { t } = getTotal(row);
+
   let lv="--lv0";
-  if(n>=100 && n<=298) lv="--lv1";
-  else if(n<=999) lv="--lv2";
-  else if(n<=2999) lv="--lv3";
-  else if(n<=4999) lv="--lv4";
-  else if(n<=9999) lv="--lv5";
-  else if(n<=49999) lv="--lv6";
-  else if(n<=100000) lv="--lv7";
-  else if(n<=299999) lv="--lv8";
-  else if(n>=300000) lv="--lv9";
+  if(t>=100 && t<=298) lv="--lv1";
+  else if(t<=999) lv="--lv2";
+  else if(t<=2999) lv="--lv3";
+  else if(t<=4999) lv="--lv4";
+  else if(t<=9999) lv="--lv5";
+  else if(t<=49999) lv="--lv6";
+  else if(t<=100000) lv="--lv7";
+  else if(t<=299999) lv="--lv8";
+  else if(t>=300000) lv="--lv9";
+
   row.style.background = `var(${lv})`;
 }
+
+/* 공약 자동 반영 (총합 기준) */
 function applyPledgeAuto(row){
-  const a=row.querySelector(".amount-cell"), p=row.querySelector(".pledge-cell");
-  if(!a||!p) return;
-  const n=getNumber(a.innerText);
-  const should=pledgeByAmount(n);
-  const cur=(p.innerText||"").trim();
-  if(!cur||cur==="소음단"||cur.startsWith("역팬")||cur.startsWith("카톡")||cur.startsWith("정성방셀")){
-    p.innerText=should;
+  const pCell = row.querySelector(".pledge-cell");
+  if(!pCell) return;
+
+  const { t } = getTotal(row);
+  const should = pledgeByTotal(t);
+  const current = (pCell.innerText || "").trim();
+
+  // 기존 방식 유지: 공약이 비었거나, 공약 룰 문장(소음단/역팬/카톡/정성방셀) 범주면 자동 갱신
+  if(!current || current === "소음단" || current.startsWith("역팬") || current.startsWith("카톡") || current.startsWith("정성방셀")){
+    pCell.innerText = should;
   }
 }
+
+/* 합계 */
 function updateSummary(){
-  let sumN=0,sumO=0,cnt=0;
-  document.querySelectorAll(".data-row").forEach(r=>{
-    sumN+=getNumber(r.querySelector(".amount-cell")?.innerText);
-    sumO+=getNumber(r.querySelector(".oneplus-cell")?.innerText);
-    cnt++;
+  let sumN=0, sumO=0, sumE=0, cnt=0;
+
+  document.querySelectorAll(".data-row").forEach(row=>{
+    const { n, o, e } = getTotal(row);
+    sumN += n; sumO += o; sumE += e; cnt += 1;
   });
-  document.querySelector(".summary-count").innerText=cnt+"명";
-  document.querySelector(".summary-nang").innerText=sumN.toLocaleString();
-  document.querySelector(".summary-one").innerText=sumO?sumO.toLocaleString():"";
-  document.querySelector(".summary-total").innerText=(sumN+sumO).toLocaleString();
+
+  document.querySelector(".summary-count").innerText = cnt + "명";
+  document.querySelector(".summary-nang").innerText = sumN ? sumN.toLocaleString() : "";
+  document.querySelector(".summary-one").innerText = sumO ? sumO.toLocaleString() : "";
+  document.querySelector(".summary-event").innerText = sumE ? sumE.toLocaleString() : "";
+  document.querySelector(".summary-total").innerText = (sumN + sumO + sumE).toLocaleString();
 }
+
+/* 정렬 (총합 내림차순) */
 function sortRows(){
-  const table=document.getElementById("table");
-  const summary=document.querySelector(".summary-row");
-  const rows=[...document.querySelectorAll(".data-row")];
-  rows.sort((a,b)=>getNumber(b.querySelector(".amount-cell")?.innerText)-getNumber(a.querySelector(".amount-cell")?.innerText));
-  rows.forEach(r=>table.insertBefore(r,summary));
+  const table = document.getElementById("table");
+  const summary = document.querySelector(".summary-row");
+  const rows = Array.from(document.querySelectorAll(".data-row"));
+
+  rows.sort((a,b)=> getTotal(b).t - getTotal(a).t);
+  rows.forEach(r => table.insertBefore(r, summary));
 }
+
+/* 전체 리프레시 */
 function refreshAll(){
-  document.querySelectorAll(".data-row").forEach(r=>{
-    applyPledgeAuto(r); applyRowStyle(r);
+  document.querySelectorAll(".data-row").forEach(row=>{
+    applyPledgeAuto(row);
+    applyRowStyle(row);
   });
-  sortRows(); updateSummary();
+  sortRows();
+  updateSummary();
 }
-document.getElementById("search").addEventListener("input",e=>{
-  const q=e.target.value.toLowerCase();
-  document.querySelectorAll(".data-row").forEach(r=>{
-    const id=r.children[0].innerText.toLowerCase();
-    const n=r.children[1].innerText.toLowerCase();
-    r.style.display=(!q||id.includes(q)||n.includes(q))?"flex":"none";
+
+/* 버튼 표시 */
+document.addEventListener("click",(e)=>{
+  const clickedRow = e.target.closest(".data-row");
+  document.querySelectorAll(".data-row").forEach(r=>r.classList.remove("show-actions"));
+  if(clickedRow) clickedRow.classList.add("show-actions");
+});
+
+/* 행 추가/삭제 */
+function addRow(after){
+  const newRow = after.cloneNode(true);
+  newRow.querySelectorAll(".cell").forEach(c=>{
+    if(c.classList.contains("action-cell")) return;
+    c.innerText = "";
+  });
+  after.insertAdjacentElement("afterend", newRow);
+  refreshAll();
+}
+function deleteRow(row){
+  if(document.querySelectorAll(".data-row").length <= 1){
+    alert("마지막 행은 삭제가 불가합니다.");
+    return;
+  }
+  row.remove();
+  refreshAll();
+}
+document.addEventListener("click",(e)=>{
+  if(e.target.classList.contains("add")) addRow(e.target.closest(".data-row"));
+  if(e.target.classList.contains("del")) deleteRow(e.target.closest(".data-row"));
+});
+
+/* 검색 */
+document.getElementById("search").addEventListener("input", e=>{
+  const q = e.target.value.toLowerCase();
+  document.querySelectorAll(".data-row").forEach(row=>{
+    const id = (row.children[0].innerText||"").toLowerCase();
+    const nick = (row.children[1].innerText||"").toLowerCase();
+    row.style.display = (!q || id.includes(q) || nick.includes(q)) ? "flex" : "none";
   });
 });
-document.addEventListener("input",refreshAll);
-window.onload=refreshAll;
+
+/* 입력 시 갱신 */
+document.addEventListener("input", ()=> refreshAll());
+
+window.onload = refreshAll;
 </script>
 
 </body>
 </html>
-
