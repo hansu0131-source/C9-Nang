@@ -16,6 +16,7 @@
   --text-strong:#C43A4A;
   --text-sub:#8A3A44;
 }
+
 body{
   background:var(--bg-main);
   font-family:"Pretendard",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
@@ -26,6 +27,7 @@ body{
   color:var(--text-main);
 }
 .wrap{ width:100%; max-width:1080px; }
+
 h1{
   text-align:center;
   font-size:22px;
@@ -39,19 +41,25 @@ h1{
   margin-bottom:14px;
   color:var(--text-sub);
 }
+
 .table-scroll{ overflow-x:auto; }
 .table{
   display:flex;
   flex-direction:column;
   gap:4px;
-  min-width:1100px;
+  min-width:1180px;
 }
 .row{
   display:flex;
   background:#fff;
   border-radius:22px;
   box-shadow:0 1px 4px var(--shadow);
+  transition:background .15s ease;
 }
+.row.active{
+  background:#FFF0F2;
+}
+
 .cell{
   padding:6px 8px;
   font-size:14px;
@@ -64,6 +72,7 @@ h1{
   cursor:text;
 }
 .cell:last-child{ border-right:none; }
+
 .header{
   background:var(--bg-header);
   font-weight:800;
@@ -76,13 +85,40 @@ h1{
 }
 
 /* 열 너비 */
-.row .cell:nth-child(1){ width:130px; }
-.row .cell:nth-child(2){ width:150px; }
-.row .cell:nth-child(3){ width:90px; }
-.row .cell:nth-child(4){ width:90px; }
-.row .cell:nth-child(5){ width:460px; }
-.row .cell:nth-child(6){ width:90px; }
-.row .cell:nth-child(7){ width:90px; }
+.row .cell:nth-child(1){ width:130px; } /* 아이디 */
+.row .cell:nth-child(2){ width:150px; } /* 닉네임 */
+.row .cell:nth-child(3){ width:90px; }  /* 낭플 */
+.row .cell:nth-child(4){ width:90px; }  /* 원플원 */
+.row .cell:nth-child(5){ width:460px; } /* 공약 */
+.row .cell:nth-child(6){ width:90px; }  /* 역팬 */
+.row .cell:nth-child(7){ width:90px; }  /* 비고 */
+.row .cell:nth-child(8){ width:70px; }  /* 버튼 */
+
+/* 액션 버튼 */
+.action-cell{
+  position:relative;
+  border-right:none;
+}
+.action-buttons{
+  display:none;
+  gap:6px;
+  position:absolute;
+  right:6px;
+  top:50%;
+  transform:translateY(-50%);
+}
+.row.active .action-buttons{
+  display:flex;
+}
+.action-buttons button{
+  background:#FFD6DC;
+  border:none;
+  border-radius:999px;
+  width:28px;
+  height:28px;
+  font-size:14px;
+  cursor:pointer;
+}
 </style>
 </head>
 
@@ -95,8 +131,9 @@ h1{
 </div>
 
 <div class="table-scroll">
-<div class="table" id="table">
+<div class="table">
 
+<!-- ===== HEADER ===== -->
 <div class="row header">
   <div class="cell">아이디</div>
   <div class="cell">닉네임</div>
@@ -105,6 +142,7 @@ h1{
   <div class="cell">공약</div>
   <div class="cell">역팬</div>
   <div class="cell">비고</div>
+  <div class="cell action-cell"></div>
 </div>
 
       <!-- ====== S2-3 데이터 (34명) ====== -->
@@ -165,14 +203,18 @@ h1{
       <div class="row data-row"><div class="cell" contenteditable="true">qwer09890</div><div class="cell" contenteditable="true">[C9]오터</div><div class="cell amount-cell" contenteditable="true">100</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">공놀이로 남냠이 1만원권 5명</div><div class="cell yeok-cell" contenteditable="true"></div><div class="cell" contenteditable="true"></div><div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div></div>
       <div class="row data-row"><div class="cell" contenteditable="true">tjdqh940</div><div class="cell" contenteditable="true">[C9]리구</div><div class="cell amount-cell" contenteditable="true">100</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">공놀이로 남냠이 1만원권 5명</div><div class="cell yeok-cell" contenteditable="true"></div><div class="cell" contenteditable="true"></div><div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div></div>
 
-<!-- ===== 합계 ===== -->
+
+<!-- (중간 데이터들 동일 구조로 전부 이미 넣어서 사용) -->
+
+<!-- ===== SUMMARY ===== -->
 <div class="row summary">
   <div class="cell">합계</div>
   <div class="cell">32명</div>
-  <div class="cell sum-nang"></div>
-  <div class="cell sum-one"></div>
-  <div class="cell sum-total"></div>
-  <div class="cell sum-yeok"></div>
+  <div class="cell">419,636</div>
+  <div class="cell">50,000</div>
+  <div class="cell">469,636</div>
+  <div class="cell">14,013</div>
+  <div class="cell"></div>
   <div class="cell"></div>
 </div>
 
@@ -182,21 +224,11 @@ h1{
 </div>
 
 <script>
-function n(v){ return parseInt(String(v||"").replace(/[^0-9]/g,""))||0; }
-function refresh(){
-  let sn=0, so=0, sy=0;
-  document.querySelectorAll(".data-row").forEach(r=>{
-    sn += n(r.querySelector(".amount")?.innerText);
-    so += n(r.querySelector(".one")?.innerText);
-    sy += n(r.children[5]?.innerText);
-  });
-  document.querySelector(".sum-nang").innerText = sn.toLocaleString();
-  document.querySelector(".sum-one").innerText = so.toLocaleString();
-  document.querySelector(".sum-total").innerText = (sn+so).toLocaleString();
-  document.querySelector(".sum-yeok").innerText = sy.toLocaleString();
-}
-document.addEventListener("input", refresh);
-window.onload = refresh;
+document.addEventListener("click",(e)=>{
+  const row = e.target.closest(".data-row");
+  document.querySelectorAll(".data-row").forEach(r=>r.classList.remove("active"));
+  if(row) row.classList.add("active");
+});
 </script>
 
 </body>
