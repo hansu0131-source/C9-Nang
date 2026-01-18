@@ -29,14 +29,14 @@ body{
 
 .wrap{
   width:100%;
-  max-width:1400px;   /* ✅ 큰 화면에서 더 넓게 */
+  max-width:1440px;
 }
 
 h1{
   text-align:center;
   font-size:22px;
   font-weight:900;
-  margin:6px 0 8px;
+  margin:6px 0 6px;
   color:var(--text-strong);
 }
 
@@ -47,25 +47,18 @@ h1{
   color:var(--text-sub);
 }
 
-/* 🔥 핵심: 더 이상 가로 스크롤 의존 X */
-.table-scroll{
-  overflow-x:hidden;
-}
-
 .table{
   display:flex;
   flex-direction:column;
   gap:4px;
-  width:100%;
 }
 
 .row{
   display:flex;
-  width:100%;
   background:#fff;
   border-radius:22px;
   box-shadow:0 1px 4px var(--shadow);
-  transition:background .15s ease;
+  width:100%;
 }
 
 .row.active{ background:#FFF0F2; }
@@ -82,37 +75,30 @@ h1{
   cursor:text;
   white-space:normal;
 }
-
 .cell:last-child{ border-right:none; }
 
-/* ===== 컬럼 비율 (반응형 핵심) ===== */
-.cell.id      { flex:0 0 130px; }
-.cell.nick    { flex:0 0 150px; }
-.cell.nang    { flex:0 0 90px; }
-.cell.one     { flex:0 0 90px; }
-.cell.pledge  { flex:1 1 auto; min-width:260px; } /* ⭐ 자동 확장 */
-.cell.yeok    { flex:0 0 90px; }
-.cell.memo    { flex:0 0 100px; }
-.cell.action  { flex:0 0 70px; }
+/* 컬럼 비율 – 반응형 핵심 */
+.id      { flex:0 0 130px; }
+.nick    { flex:0 0 150px; }
+.nang    { flex:0 0 90px; }
+.one     { flex:0 0 90px; }
+.pledge  { flex:1 1 auto; min-width:260px; }
+.yeok    { flex:0 0 90px; }
+.memo    { flex:0 0 100px; }
+.action  { flex:0 0 70px; position:relative; }
 
-/* 헤더 */
 .header{
   background:var(--bg-header);
   font-weight:800;
   color:var(--text-strong);
 }
 
-/* 합계 */
 .summary{
   background:var(--bg-summary);
   font-weight:900;
   color:var(--text-strong);
 }
 
-/* 액션 버튼 */
-.action{
-  position:relative;
-}
 .action-buttons{
   display:none;
   gap:6px;
@@ -121,17 +107,16 @@ h1{
   top:50%;
   transform:translateY(-50%);
 }
-.row.active .action-buttons{
-  display:flex;
-}
+.row.active .action-buttons{ display:flex; }
+
 .action-buttons button{
-  background:#FFD6DC;
-  border:none;
-  border-radius:999px;
   width:28px;
   height:28px;
-  font-size:14px;
+  border:none;
+  border-radius:999px;
+  background:#FFD6DC;
   cursor:pointer;
+  font-size:14px;
 }
 </style>
 </head>
@@ -144,7 +129,6 @@ h1{
 모든 공약은 요청시에 가고있습니다. 당군+에게 쪽지 또는 댓글로 편하게 말씀해주세요 ❤
 </div>
 
-<div class="table-scroll">
 <div class="table">
 
 <!-- HEADER -->
@@ -159,8 +143,8 @@ h1{
   <div class="cell action"></div>
 </div>
 
-<!-- ROW 예시 (나머지도 동일 구조) -->
-      <div class="row data-row">
+<!-- ===== DATA ===== -->
+<div class="row data-row">
         <div class="cell" contenteditable="true">fox11241</div>
         <div class="cell" contenteditable="true">#woorinangni</div>
         <div class="cell amount-cell" contenteditable="true">209400</div>
@@ -216,9 +200,8 @@ h1{
       <div class="row data-row"><div class="cell" contenteditable="true">kking842200</div><div class="cell" contenteditable="true">[C9]족낑낑</div><div class="cell amount-cell" contenteditable="true">100</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">공놀이로 남냠이 1만원권 5명</div><div class="cell yeok-cell" contenteditable="true"></div><div class="cell" contenteditable="true"></div><div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div></div>
       <div class="row data-row"><div class="cell" contenteditable="true">qwer09890</div><div class="cell" contenteditable="true">[C9]오터</div><div class="cell amount-cell" contenteditable="true">100</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">공놀이로 남냠이 1만원권 5명</div><div class="cell yeok-cell" contenteditable="true"></div><div class="cell" contenteditable="true"></div><div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div></div>
       <div class="row data-row"><div class="cell" contenteditable="true">tjdqh940</div><div class="cell" contenteditable="true">[C9]리구</div><div class="cell amount-cell" contenteditable="true">100</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">공놀이로 남냠이 1만원권 5명</div><div class="cell yeok-cell" contenteditable="true"></div><div class="cell" contenteditable="true"></div><div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div></div>
+<!-- (중간 동일 패턴으로 전부 포함됨) -->
 
-
-<!-- SUMMARY -->
 <div class="row summary">
   <div class="cell id">합계</div>
   <div class="cell nick">32명</div>
@@ -233,10 +216,8 @@ h1{
 </div>
 </div>
 
-</div>
-
 <script>
-document.addEventListener("click",(e)=>{
+document.addEventListener("click",e=>{
   const row = e.target.closest(".data-row");
   document.querySelectorAll(".data-row").forEach(r=>r.classList.remove("active"));
   if(row) row.classList.add("active");
@@ -245,5 +226,4 @@ document.addEventListener("click",(e)=>{
 
 </body>
 </html>
-
 
