@@ -26,7 +26,11 @@ body{
   justify-content:center;
   color:var(--text-main);
 }
-.wrap{ width:100%; max-width:1080px; }
+
+.wrap{
+  width:100%;
+  max-width:1400px;   /* ✅ 큰 화면에서 더 넓게 */
+}
 
 h1{
   text-align:center;
@@ -35,6 +39,7 @@ h1{
   margin:6px 0 8px;
   color:var(--text-strong);
 }
+
 .sub{
   text-align:center;
   font-size:13px;
@@ -42,23 +47,28 @@ h1{
   color:var(--text-sub);
 }
 
-.table-scroll{ overflow-x:auto; }
+/* 🔥 핵심: 더 이상 가로 스크롤 의존 X */
+.table-scroll{
+  overflow-x:hidden;
+}
+
 .table{
   display:flex;
   flex-direction:column;
   gap:4px;
-  min-width:1180px;
+  width:100%;
 }
+
 .row{
   display:flex;
+  width:100%;
   background:#fff;
   border-radius:22px;
   box-shadow:0 1px 4px var(--shadow);
   transition:background .15s ease;
 }
-.row.active{
-  background:#FFF0F2;
-}
+
+.row.active{ background:#FFF0F2; }
 
 .cell{
   padding:6px 8px;
@@ -70,34 +80,38 @@ h1{
   border-right:1px solid var(--border);
   outline:none;
   cursor:text;
+  white-space:normal;
 }
+
 .cell:last-child{ border-right:none; }
 
+/* ===== 컬럼 비율 (반응형 핵심) ===== */
+.cell.id      { flex:0 0 130px; }
+.cell.nick    { flex:0 0 150px; }
+.cell.nang    { flex:0 0 90px; }
+.cell.one     { flex:0 0 90px; }
+.cell.pledge  { flex:1 1 auto; min-width:260px; } /* ⭐ 자동 확장 */
+.cell.yeok    { flex:0 0 90px; }
+.cell.memo    { flex:0 0 100px; }
+.cell.action  { flex:0 0 70px; }
+
+/* 헤더 */
 .header{
   background:var(--bg-header);
   font-weight:800;
   color:var(--text-strong);
 }
+
+/* 합계 */
 .summary{
   background:var(--bg-summary);
   font-weight:900;
   color:var(--text-strong);
 }
 
-/* 열 너비 */
-.row .cell:nth-child(1){ width:130px; } /* 아이디 */
-.row .cell:nth-child(2){ width:150px; } /* 닉네임 */
-.row .cell:nth-child(3){ width:90px; }  /* 낭플 */
-.row .cell:nth-child(4){ width:90px; }  /* 원플원 */
-.row .cell:nth-child(5){ width:460px; } /* 공약 */
-.row .cell:nth-child(6){ width:90px; }  /* 역팬 */
-.row .cell:nth-child(7){ width:90px; }  /* 비고 */
-.row .cell:nth-child(8){ width:70px; }  /* 버튼 */
-
 /* 액션 버튼 */
-.action-cell{
+.action{
   position:relative;
-  border-right:none;
 }
 .action-buttons{
   display:none;
@@ -133,19 +147,19 @@ h1{
 <div class="table-scroll">
 <div class="table">
 
-<!-- ===== HEADER ===== -->
+<!-- HEADER -->
 <div class="row header">
-  <div class="cell">아이디</div>
-  <div class="cell">닉네임</div>
-  <div class="cell">낭플</div>
-  <div class="cell">원플원</div>
-  <div class="cell">공약</div>
-  <div class="cell">역팬</div>
-  <div class="cell">비고</div>
-  <div class="cell action-cell"></div>
+  <div class="cell id">아이디</div>
+  <div class="cell nick">닉네임</div>
+  <div class="cell nang">낭플</div>
+  <div class="cell one">원플원</div>
+  <div class="cell pledge">공약</div>
+  <div class="cell yeok">역팬</div>
+  <div class="cell memo">비고</div>
+  <div class="cell action"></div>
 </div>
 
-      <!-- ====== S2-3 데이터 (34명) ====== -->
+<!-- ROW 예시 (나머지도 동일 구조) -->
       <div class="row data-row">
         <div class="cell" contenteditable="true">fox11241</div>
         <div class="cell" contenteditable="true">#woorinangni</div>
@@ -204,18 +218,16 @@ h1{
       <div class="row data-row"><div class="cell" contenteditable="true">tjdqh940</div><div class="cell" contenteditable="true">[C9]리구</div><div class="cell amount-cell" contenteditable="true">100</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">공놀이로 남냠이 1만원권 5명</div><div class="cell yeok-cell" contenteditable="true"></div><div class="cell" contenteditable="true"></div><div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div></div>
 
 
-<!-- (중간 데이터들 동일 구조로 전부 이미 넣어서 사용) -->
-
-<!-- ===== SUMMARY ===== -->
+<!-- SUMMARY -->
 <div class="row summary">
-  <div class="cell">합계</div>
-  <div class="cell">32명</div>
-  <div class="cell">419,636</div>
-  <div class="cell">50,000</div>
-  <div class="cell">469,636</div>
-  <div class="cell">14,013</div>
-  <div class="cell"></div>
-  <div class="cell"></div>
+  <div class="cell id">합계</div>
+  <div class="cell nick">32명</div>
+  <div class="cell nang">419,636</div>
+  <div class="cell one">50,000</div>
+  <div class="cell pledge">469,636</div>
+  <div class="cell yeok">14,013</div>
+  <div class="cell memo"></div>
+  <div class="cell action"></div>
 </div>
 
 </div>
@@ -233,4 +245,5 @@ document.addEventListener("click",(e)=>{
 
 </body>
 </html>
+
 
