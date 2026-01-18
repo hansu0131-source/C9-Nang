@@ -6,189 +6,106 @@
 <title>🐰 C9 시즌2 · 3회차 낭플단</title>
 
 <style>
-/* ===== Theme (S2-3) : 색상 지시가 없어서 중립 파스텔로 설정 =====
-   원하면 여기 변수만 바꾸면 시즌 컬러 바로 변경 가능 */
 :root{
-  --bg:#FFF7FA;
-  --text:#4a2230;
-  --accent:#D94C7A;
-
-  --nav:#FFE2EC;
-  --navHover:#FFD2E2;
-
-  --headerBg:#FFE8F0;
-  --headerText:#8D2B4F;
-
-  --rowBg:#FFFFFF;
-  --rowShadow:rgba(220,80,120,.16);
-  --border:#FFE0EA;
-
-  --summaryBg:#FFF1F6;
+  --bg-main:#FFF5F6;
+  --bg-header:#FFE6EA;
+  --bg-summary:#FFF0F2;
+  --border:#FFD6DC;
+  --shadow:rgba(220,80,90,.18);
+  --text-main:#5A1F28;
+  --text-strong:#C43A4A;
+  --text-sub:#8A3A44;
 }
-
-/* Layout */
 body{
-  background:var(--bg);
+  background:var(--bg-main);
   font-family:"Pretendard",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
-  display:flex; justify-content:center;
-  padding:20px 16px; margin:0;
-  color:var(--text);
+  margin:0;
+  padding:20px 16px;
+  display:flex;
+  justify-content:center;
+  color:var(--text-main);
 }
-
-.wrap{ width:100%; max-width:1080px; margin:0 auto; }
-
-/* 상단 네비 버튼 */
-.nav-top{ display:flex; gap:8px; margin-bottom:14px; }
-.nav-btn{
-  padding:6px 14px;
-  background:var(--nav);
-  border:none; border-radius:999px;
-  font-size:14px; color:var(--headerText);
-  cursor:pointer; font-weight:800;
-}
-.nav-btn:hover{ background:var(--navHover); }
-
+.wrap{ width:100%; max-width:1080px; }
 h1{
   text-align:center;
-  font-size:22px; font-weight:900;
-  margin:6px 0 10px;
-  color:var(--accent);
+  font-size:22px;
+  font-weight:900;
+  margin:6px 0 8px;
+  color:var(--text-strong);
 }
-
 .sub{
   text-align:center;
   font-size:13px;
-  margin:-2px 0 14px;
-  color:#7a344c;
+  margin-bottom:14px;
+  color:var(--text-sub);
 }
-
-/* 검색 바 */
-.filter-bar{
-  display:flex; justify-content:center; gap:8px;
-  margin-bottom:12px; font-size:13px;
-}
-.filter-bar input{
-  flex:1; max-width:280px;
-  padding:7px 12px;
-  border-radius:999px;
-  border:1px solid var(--border);
-  background:#fff;
-  outline:none;
-}
-.filter-bar input:focus{
-  border-color:var(--accent);
-  box-shadow:0 0 0 2px rgba(217,76,122,0.18);
-}
-
-.table-scroll{ overflow-x:auto; padding-bottom:4px; }
+.table-scroll{ overflow-x:auto; }
 .table{
-  display:flex; flex-direction:column; gap:4px;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
   min-width:1100px;
 }
 .row{
   display:flex;
-  background:var(--rowBg);
-  border-radius:24px;
-  overflow:hidden;
-  box-shadow:0 1px 4px var(--rowShadow);
-  padding:2px 0;
-  transition:box-shadow .15s ease, transform .15s ease;
-}
-.data-row:hover{
-  box-shadow:0 3px 10px rgba(220,80,120,.24);
-  transform:translateY(-1px);
+  background:#fff;
+  border-radius:22px;
+  box-shadow:0 1px 4px var(--shadow);
 }
 .cell{
-  padding:4px 8px;
+  padding:6px 8px;
   font-size:14px;
-  display:inline-flex;
+  display:flex;
   justify-content:center;
   align-items:center;
   text-align:center;
   border-right:1px solid var(--border);
   outline:none;
   cursor:text;
-  white-space:normal;
-  word-break:keep-all;
 }
 .cell:last-child{ border-right:none; }
-
-.header{ background:var(--headerBg); }
-.header .cell{
-  font-weight:900;
-  color:var(--headerText);
-  border-bottom:2px solid var(--navHover);
-  cursor:default;
-}
-
-.summary-row{
-  background:var(--summaryBg);
-  font-weight:900;
-  color:var(--headerText);
-}
-
-/* 열 너비 (7열 + 액션) */
-.row .cell:nth-child(1){ width:130px; } /* 아이디 */
-.row .cell:nth-child(2){ width:140px; } /* 닉네임 */
-.row .cell:nth-child(3){ width:90px;  } /* 낭플 */
-.row .cell:nth-child(4){ width:90px;  } /* 원플원 */
-.row .cell:nth-child(5){ width:480px; } /* 공약 */
-.row .cell:nth-child(6){ width:90px;  } /* 역팬 */
-.row .cell:nth-child(7){ width:90px;  } /* 비고 */
-.row .cell:nth-child(8){ width:80px;  } /* 버튼 */
-
-.action-cell{ position:relative; border-right:none; }
-.action-buttons{
-  display:none; gap:4px;
-  position:absolute; right:4px; top:50%;
-  transform:translateY(-50%);
-}
-.action-buttons button{
-  background:var(--nav);
-  border:none; border-radius:999px;
-  padding:3px 7px;
-  font-size:11px;
-  cursor:pointer;
-  color:var(--headerText);
-  transition:background .15s ease, transform .15s ease;
+.header{
+  background:var(--bg-header);
   font-weight:800;
+  color:var(--text-strong);
 }
-.action-buttons button:hover{
-  background:var(--navHover);
-  transform:translateY(-1px);
+.summary{
+  background:var(--bg-summary);
+  font-weight:900;
+  color:var(--text-strong);
 }
-.row.show-actions .action-buttons{ display:flex; }
+
+/* 열 너비 */
+.row .cell:nth-child(1){ width:130px; }
+.row .cell:nth-child(2){ width:150px; }
+.row .cell:nth-child(3){ width:90px; }
+.row .cell:nth-child(4){ width:90px; }
+.row .cell:nth-child(5){ width:460px; }
+.row .cell:nth-child(6){ width:90px; }
+.row .cell:nth-child(7){ width:90px; }
 </style>
 </head>
 
 <body>
 <div class="wrap">
 
-  <div class="nav-top">
-    <button onclick="location.href='../index.html'" class="nav-btn">🏠 홈</button>
-    <button onclick="history.back()" class="nav-btn">◀ 이전</button>
-  </div>
+<h1>🐰 C9 시즌2 · 3회차 낭플단</h1>
+<div class="sub">
+모든 공약은 요청시에 가고있습니다. 당군+에게 쪽지 또는 댓글로 편하게 말씀해주세요 ❤
+</div>
 
-  <h1>🐰 C9 시즌2 · 3회차 낭플단</h1>
-  <div class="sub">모든 공약은 요청시에 가고있습니다. 당군+에게 쪽지 또는 댓들로 편하게 말씀해주세요 ❤</div>
+<div class="table-scroll">
+<div class="table" id="table">
 
-  <div class="filter-bar">
-    <input id="search" type="text" placeholder="아이디 / 닉네임 검색">
-  </div>
-
-  <div class="table-scroll">
-    <div class="table" id="table">
-
-      <div class="row header">
-        <div class="cell">아이디</div>
-        <div class="cell">닉네임</div>
-        <div class="cell">낭플</div>
-        <div class="cell">원플원</div>
-        <div class="cell">공약</div>
-        <div class="cell">역팬</div>
-        <div class="cell">비고</div>
-        <div class="cell action-cell"></div>
-      </div>
+<div class="row header">
+  <div class="cell">아이디</div>
+  <div class="cell">닉네임</div>
+  <div class="cell">낭플</div>
+  <div class="cell">원플원</div>
+  <div class="cell">공약</div>
+  <div class="cell">역팬</div>
+  <div class="cell">비고</div>
+</div>
 
       <!-- ====== S2-3 데이터 (34명) ====== -->
       <div class="row data-row">
@@ -248,112 +165,40 @@ h1{
       <div class="row data-row"><div class="cell" contenteditable="true">qwer09890</div><div class="cell" contenteditable="true">[C9]오터</div><div class="cell amount-cell" contenteditable="true">100</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">공놀이로 남냠이 1만원권 5명</div><div class="cell yeok-cell" contenteditable="true"></div><div class="cell" contenteditable="true"></div><div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div></div>
       <div class="row data-row"><div class="cell" contenteditable="true">tjdqh940</div><div class="cell" contenteditable="true">[C9]리구</div><div class="cell amount-cell" contenteditable="true">100</div><div class="cell oneplus-cell" contenteditable="true"></div><div class="cell pledge-cell" contenteditable="true">공놀이로 남냠이 1만원권 5명</div><div class="cell yeok-cell" contenteditable="true"></div><div class="cell" contenteditable="true"></div><div class="cell action-cell"><div class="action-buttons"><button class="add">+</button><button class="del">🗑</button></div></div></div>
 
-      <!-- 합계 -->
-      <div class="row summary-row">
-        <div class="cell">합계</div>
-        <div class="cell summary-count"></div>
-        <div class="cell summary-nang"></div>
-        <div class="cell summary-one"></div>
-        <div class="cell summary-total"></div>
-        <div class="cell summary-yeok"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-      </div>
+<!-- ===== 합계 ===== -->
+<div class="row summary">
+  <div class="cell">합계</div>
+  <div class="cell">32명</div>
+  <div class="cell sum-nang"></div>
+  <div class="cell sum-one"></div>
+  <div class="cell sum-total"></div>
+  <div class="cell sum-yeok"></div>
+  <div class="cell"></div>
+</div>
 
-    </div>
-  </div>
+</div>
+</div>
+
 </div>
 
 <script>
-function getNumber(v){
-  return parseInt(String(v ?? "").replace(/[^0-9]/g,"")) || 0;
-}
-
-/* 합계 */
-function updateSummary(){
-  let sumN=0, sumO=0, sumY=0, cnt=0;
-
-  document.querySelectorAll(".data-row").forEach(row=>{
-    const a = getNumber(row.querySelector(".amount-cell")?.innerText);
-    const o = getNumber(row.querySelector(".oneplus-cell")?.innerText);
-    const y = getNumber(row.querySelector(".yeok-cell")?.innerText);
-
-    sumN += a; sumO += o; sumY += y; cnt += 1;
+function n(v){ return parseInt(String(v||"").replace(/[^0-9]/g,""))||0; }
+function refresh(){
+  let sn=0, so=0, sy=0;
+  document.querySelectorAll(".data-row").forEach(r=>{
+    sn += n(r.querySelector(".amount")?.innerText);
+    so += n(r.querySelector(".one")?.innerText);
+    sy += n(r.children[5]?.innerText);
   });
-
-  document.querySelector(".summary-count").innerText = cnt + "명";
-  document.querySelector(".summary-nang").innerText = sumN.toLocaleString();
-  document.querySelector(".summary-one").innerText = sumO ? sumO.toLocaleString() : "";
-  document.querySelector(".summary-total").innerText = (sumN + sumO).toLocaleString();
-  document.querySelector(".summary-yeok").innerText = sumY ? sumY.toLocaleString() : "";
+  document.querySelector(".sum-nang").innerText = sn.toLocaleString();
+  document.querySelector(".sum-one").innerText = so.toLocaleString();
+  document.querySelector(".sum-total").innerText = (sn+so).toLocaleString();
+  document.querySelector(".sum-yeok").innerText = sy.toLocaleString();
 }
-
-/* 정렬 (낭플 내림차순) */
-function sortRows(){
-  const table = document.getElementById("table");
-  const summary = document.querySelector(".summary-row");
-  const rows = Array.from(document.querySelectorAll(".data-row"));
-
-  rows.sort((a,b)=>{
-    const av = getNumber(a.querySelector(".amount-cell")?.innerText);
-    const bv = getNumber(b.querySelector(".amount-cell")?.innerText);
-    return bv - av;
-  });
-
-  rows.forEach(r => table.insertBefore(r, summary));
-}
-
-/* 전체 리프레시 */
-function refreshAll(){
-  sortRows();
-  updateSummary();
-}
-
-/* 버튼 표시 */
-document.addEventListener("click",(e)=>{
-  const clickedRow = e.target.closest(".data-row");
-  document.querySelectorAll(".data-row").forEach(r=>r.classList.remove("show-actions"));
-  if(clickedRow) clickedRow.classList.add("show-actions");
-});
-
-/* 행 추가/삭제 */
-function addRow(after){
-  const newRow = after.cloneNode(true);
-  newRow.querySelectorAll(".cell").forEach(c=>{
-    if(c.classList.contains("action-cell")) return;
-    c.innerText = "";
-  });
-  after.insertAdjacentElement("afterend", newRow);
-  refreshAll();
-}
-function deleteRow(row){
-  if(document.querySelectorAll(".data-row").length <= 1){
-    alert("마지막 행은 삭제가 불가합니다.");
-    return;
-  }
-  row.remove();
-  refreshAll();
-}
-document.addEventListener("click",(e)=>{
-  if(e.target.classList.contains("add")) addRow(e.target.closest(".data-row"));
-  if(e.target.classList.contains("del")) deleteRow(e.target.closest(".data-row"));
-});
-
-/* 검색 */
-document.getElementById("search").addEventListener("input", e=>{
-  const q = e.target.value.toLowerCase();
-  document.querySelectorAll(".data-row").forEach(row=>{
-    const id = (row.children[0].innerText||"").toLowerCase();
-    const nick = (row.children[1].innerText||"").toLowerCase();
-    row.style.display = (!q || id.includes(q) || nick.includes(q)) ? "flex" : "none";
-  });
-});
-
-/* 입력 시 갱신 */
-document.addEventListener("input", ()=> refreshAll());
-
-window.onload = refreshAll;
+document.addEventListener("input", refresh);
+window.onload = refresh;
 </script>
 
 </body>
 </html>
+
